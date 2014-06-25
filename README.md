@@ -8,6 +8,13 @@ To access set the shortcuts for toggling language and to compose characters add 
 | --------------------------------- | ----------------------------------------------------- |
 | `t/T`                             | toggles between Yiddish and English modes             |
 | <code>&#124;</code>               | toggles between non-composed and composed glyphs      |
-| <code>&#60;Leader&#62;</code>tran | translates selection to current glyph types           |
-| <code>&#60;Leader&#62;</code>tral | translates buffer to current glyph types              |
+| <code>&#60;Leader&#62;tran</code> | translates selection to current glyph types           |
+| <code>&#60;Leader&#62;tral</code> | translates buffer to current glyph types              |
 | <code>&#60;F8&#62;</code>         | toggles between Yiddish and English in insert mode    |
+
+
+
+| Command                           | Function                                              |
+| --------------------------------- | ----------------------------------------------------- |
+| `:Yidkey`                         | toggles between Yiddish and English modes             |
+|                                   |                                                       |
