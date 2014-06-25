@@ -1,9 +1,10 @@
-if exists("g:enable_Yiddish") && g:enable_Yiddish
+function! YiddishShortCuts()
     noremap t :Yidkey<Enter>
     noremap T :Yidkey<Enter>
-    noremap <Leader>tran :call YiddishComposingTranslation()<Enter>
+    noremap <Leader>tran :CompTransSel<Enter>
+    noremap <Leader>tral :CompTransAll<Enter>
     inoremap <F8> :Yidkey<Enter>
-endif
+endfunction
 let g:precomposed=1
 function! Composure()
     if g:precomposed
@@ -73,8 +74,35 @@ function! YiddishKeyBoard()
     endif
 endfunction
 
+python << endpython
+import vim
+from unicodedata import normalize
+def regexthing(decomposables = "URABIGDUMMY"):
+    if decomposables == "URABIGDUMMY":
+        chars = vim.current.window.buffer.vars["decompchars"]
+    if vim.vars["precomposed"]:#seems wrong
+        for char in chars.decode('utf-8'):
+            vim.command("'<,'>s/"+normalize('NKD',char)+"/"+char+"/g")        
+            print "Characters now precomposed"
+    else:
+        for char in chars.decode('utf-8'):
+            vim.command("'<,'>s/"+char+"/"+normalize('NKD',char)+"/g")        
+            print "Characters now decomposed"
+def regexthingall(decomposables = "URABIGDUMMY"):
+    if decomposables == "URABIGDUMMY":
+        chars = vim.current.window.buffer.vars["decompchars"]
+    if vim.vars["precomposed"]:#seems wrong
+        for char in chars.decode('utf-8'):
+            vim.command("'<,'>s/"+normalize('NKD',char)+"/"+char+"/g")        
+            print "Characters now precomposed"
+    else:
+        for char in chars.decode('utf-8'):
+            vim.command("'<,'>s/"+char+"/"+normalize('NKD',char)+"/g")        
+            print "Characters now decomposed"
+endpython
 
 
 command Yidkey :call YiddishKeyBoard()
 command Precomp :call Composure()
-command CompTrans :call YiddishComposingTranslation()
+command CompTransAll :py regexthingall
+command CompTransSel :py regexthing
