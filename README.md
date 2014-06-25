@@ -4,6 +4,8 @@ Install with pathogen by cloning into your bundle folder.
 
 To access set the shortcuts for toggling language and to compose characters add the line "call YiddishShortCuts()" to your .vimrc file or call it yourself.
 
+Keymaps based on: http://www.shoshke.net/uyip/qwerty_os_10.htm
+
 | Mapping                           | Function                                              |
 | --------------------------------- | ----------------------------------------------------- |
 | `t/T`                             | toggles between Yiddish and English modes             |
@@ -17,4 +19,6 @@ To access set the shortcuts for toggling language and to compose characters add 
 | Command                           | Function                                              |
 | --------------------------------- | ----------------------------------------------------- |
 | `:Yidkey`                         | toggles between Yiddish and English modes             |
-|                                   |                                                       |
+| `:Precomp`                        | toggles between non-composed and composed glyphs      |
+| `:CompTransAll`                   | translates selection to current glyph types           |
+| `:CompTransSel`                   | translates buffer to current glyph types              |
