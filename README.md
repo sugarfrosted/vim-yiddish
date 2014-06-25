@@ -7,7 +7,7 @@ To access set the shortcuts for toggling language and to compose characters add 
 Keymaps based on: http://www.shoshke.net/uyip/qwerty_os_10.htm
 
 | Mapping                           | Function                                              |
-| --------------------------------- | ----------------------------------------------------- |
+|:---------------------------------:| ----------------------------------------------------- |
 | `t/T`                             | toggles between Yiddish and English modes             |
 | <code>&#124;</code>               | toggles between non-composed and composed glyphs      |
 | <code>&#60;Leader&#62;tran</code> | translates selection to current glyph types           |
