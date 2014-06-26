@@ -5,6 +5,7 @@ function! YiddishShortCuts()
     noremap <Leader>tral :CompTransAll<Enter>
     inoremap <F8> :Yidkey<Enter>
 endfunction
+command YiddishSC :call YiddishShortCuts()
 let g:precomposed=1
 function! Composure()
     if g:precomposed

@@ -2,7 +2,7 @@ My little yiddish settings and keymaps for vim.
 
 Install with pathogen by cloning into your bundle folder.
 
-To access set the shortcuts for toggling language and to compose characters run the command ":call YiddishShortCuts()"after startup or add `let g:YiddishMappings` to your .vimrc file or call it yourself.
+To access set the shortcuts for toggling language and to compose characters use the command `:YiddishSC` after startup or add `let g:YiddishMappings` to your .vimrc file or call it yourself.
 
 Keymaps based on: http://www.shoshke.net/uyip/qwerty_os_10.htm
 
@@ -22,3 +22,4 @@ Keymaps based on: http://www.shoshke.net/uyip/qwerty_os_10.htm
 | `:Precomp`                        | toggles between non-composed and composed glyphs      |
 | `:CompTransAll`                   | translates selection to current glyph types           |
 | `:CompTransSel`                   | translates buffer to current glyph types              |
+| `:YiddishSC`                      | creates the mappings in the above table               |
