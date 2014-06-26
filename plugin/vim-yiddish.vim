@@ -1,6 +1,6 @@
 function! YiddishShortCuts()
-    noremap t :Yidkey<Enter>
-    noremap T :Yidkey<Enter>
+    nnoremap t :Yidkey<Enter>
+    nnoremap T :Yidkey<Enter>
     noremap <Leader>tran :CompTransSel<Enter>
     noremap <Leader>tral :CompTransAll<Enter>
     inoremap <F8> :Yidkey<Enter>
@@ -106,3 +106,9 @@ command Yidkey :call YiddishKeyBoard()
 command Precomp :call Composure()
 command CompTransAll :py regexthingall
 command CompTransSel :py regexthing
+if !exists("g:YiddishMappings")
+    let g:YiddishMappings = 0
+endif
+if g:YiddishMappings
+    autocmd VimEnter * call YiddishShortCuts()
+endif
