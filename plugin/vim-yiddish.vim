@@ -3,7 +3,7 @@ function! YiddishShortCuts()
     nnoremap T :Yidkey<Enter>
     noremap <Leader>tran :CompTransSel<Enter>
     noremap <Leader>tral :CompTransAll<Enter>
-    inoremap <F8> :Yidkey<Enter>
+    inoremap <F8> <c-\><c-O>:Yidkey<Enter>
 endfunction
 command YiddishSC :call YiddishShortCuts()
 let g:precomposed=1
