@@ -1,6 +1,8 @@
 function! YiddishShortCuts()
-    nnoremap t :Yidkey<Enter>
-    nnoremap T :Yidkey<Enter>
+    nnoremap <A_t> :Yidkey<Enter>
+    nnoremap <A_T> :Yidkey<Enter>
+    nnoremap † :Yidkey<Enter>
+    nnoremap ˇ :Yidkey<Enter>
     noremap <Leader>tran :CompTransSel<Enter>
     noremap <Leader>tral :CompTransAll<Enter>
     inoremap <F8> <c-\><c-O>:Yidkey<Enter>

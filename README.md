@@ -8,7 +8,8 @@ Keymaps based on: http://www.shoshke.net/uyip/qwerty_os_10.htm
 
 | Mapping                           | Function                                              |
 |:---------------------------------:| ----------------------------------------------------- |
-| `t`/`T`                           | toggles between Yiddish and English modes             |
+| `Alt+t`/`Alt+T`                   | toggles between Yiddish and English modes             |
+| <code>&#8224;</code>/<code>&#711;</code>              | toggles between Yiddish and English modes (for mac US English compatibility) |
 | <code>&#124;</code>               | toggles between non-composed and composed glyphs      |
 | <code>&#60;Leader&#62;tran</code> | translates selection to current glyph types           |
 | <code>&#60;Leader&#62;tral</code> | translates buffer to current glyph types              |
