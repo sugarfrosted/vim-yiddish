@@ -1,10 +1,10 @@
 function! YiddishShortCuts()
     if exists("g:OldYiddishKeys")
         if type(g:OldYiddishKeys) == type("")
-            execute "nunmap " . mapping . " Yidkey<Enter>"
+            execute "nunmap " . mapping . " :Yidkey<Enter>"
         elseif type(g:OldYiddishKeys) == type([])
             for mapping in g:OldYiddishKeys
-                execute "nunmap " . mapping . " Yidkey<Enter>"
+                execute "nunmap " . mapping . " :Yidkey<Enter>"
             endfor
         endif
     endif
@@ -12,14 +12,13 @@ function! YiddishShortCuts()
         let g:YiddishKeys = ["t","T"]
     endif
     if type(g:YiddishKeys) == type("")
-        execute "nnoremap " . mapping . " Yidkey<Enter>"
+        execute "nnoremap " . mapping . " :Yidkey<Enter>"
     else
-        if type(g:YiddishKeys) == type([])
-        else
+        if type(g:YiddishKeys) != type([])
             let g:YiddishKeys = ["t","T"]
         endif
         for mapping in g:YiddishKeys
-            execute "nnoremap " . mapping . " Yidkey<Enter>"
+            execute "nnoremap " . mapping . " :Yidkey<Enter>"
         endfor
     endif
     let g:OldYiddishKeys = g:YiddishKeys
