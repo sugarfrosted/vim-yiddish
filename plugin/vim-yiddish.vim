@@ -1,12 +1,33 @@
 function! YiddishShortCuts()
-    nnoremap <A_t> :Yidkey<Enter>
-    nnoremap <A_T> :Yidkey<Enter>
-    nnoremap † :Yidkey<Enter>
-    nnoremap ˇ :Yidkey<Enter>
+    if exists("g:OldYiddishKeys")
+        if type(g:OldYiddishKeys) == type("")
+            execute "nunmap " . mapping . " Yidkey<Enter>"
+        elseif type(g:OldYiddishKeys) == type([])
+            for mapping in g:OldYiddishKeys
+                execute "nunmap " . mapping . " Yidkey<Enter>"
+            endfor
+        endif
+    endif
+    if !exists("g:YiddishKeys")
+        let g:YiddishKeys = ["t","T"]
+    endif
+    if type(g:YiddishKeys) == type("")
+        execute "nnoremap " . mapping . " Yidkey<Enter>"
+    else
+        if type(g:YiddishKeys) == type([])
+        else
+            let g:YiddishKeys = ["t","T"]
+        endif
+        for mapping in g:YiddishKeys
+            execute "nnoremap " . mapping . " Yidkey<Enter>"
+        endfor
+    endif
+    let g:OldYiddishKeys = g:YiddishKeys
     noremap <Leader>tran :CompTransSel<Enter>
     noremap <Leader>tral :CompTransAll<Enter>
-    inoremap <F8> <c-\><c-O>:Yidkey<Enter>
+    inoremap R <c-\><c-O>:Yidkey<Enter>
 endfunction
+
 command YiddishSC :call YiddishShortCuts()
 let g:precomposed=1
 function! Composure()
@@ -64,7 +85,7 @@ function! YiddishKeyBoard()
             set spelllang=yi
             echo "Non-Precomposed Yiddish"
         endif
-        if &termbidi
+        if &termbidi "experimental and hackeryish
             nnoremap h l
             nnoremap l h
             inoremap <left> <right>
@@ -109,9 +130,9 @@ command Yidkey :call YiddishKeyBoard()
 command Precomp :call Composure()
 command CompTransAll :py regexthingall
 command CompTransSel :py regexthing
-if !exists("g:YiddishMappings")
-    let g:YiddishMappings = 0
+if !exists("g:YiddishEnabled")
+    let g:YiddishEnabled = 0
 endif
-if g:YiddishMappings
+if g:YiddishEnabled
     autocmd VimEnter * call YiddishShortCuts()
 endif
