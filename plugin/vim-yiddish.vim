@@ -24,7 +24,7 @@ function! YiddishShortCuts()
     let g:OldYiddishKeys = g:YiddishKeys
     noremap <Leader>tran :CompTransSel<Enter>
     noremap <Leader>tral :CompTransAll<Enter>
-    inoremap R <c-\><c-O>:Yidkey<Enter>
+    inoremap <F8> <c-\><c-O>:Yidkey<Enter>
 endfunction
 
 command YiddishSC :call YiddishShortCuts()
@@ -97,41 +97,32 @@ function! YiddishKeyBoard()
     endif
 endfunction
 
-python << endpython
-import vim
-from unicodedata import normalize
-def regexthing(decomposables = "URABIGDUMMY"):
-    if decomposables == "URABIGDUMMY":
-        chars = vim.current.window.buffer.vars["decompchars"]
-    if vim.vars["precomposed"]:#seems wrong
-        for char in chars.decode('utf-8'):
-            vim.command("'<,'>s/"+normalize('NKD',char)+"/"+char+"/g")        
-            print("Characters now precomposed")
-    else:
-        for char in chars.decode('utf-8'):
-            vim.command("'<,'>s/"+char+"/"+normalize('NKD',char)+"/g")        
-            print("Characters now decomposed")
-def regexthingall(decomposables = "URABIGDUMMY"):
-    if decomposables == "URABIGDUMMY":
-        chars = vim.current.window.buffer.vars["decompchars"]
-    if vim.vars["precomposed"]:#seems wrong
-        for char in chars.decode('utf-8'):
-            vim.command("'<,'>s/"+normalize('NKD',char)+"/"+char+"/g")        
-            print("Characters now precomposed")
-    else:
-        for char in chars.decode('utf-8'):
-            vim.command("'<,'>s/"+char+"/"+normalize('NKD',char)+"/g")        
-            print("Characters now decomposed")
-endpython
+let g:yidnoncomp2precomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ","פּ" : "פּ","פֿ" : "פֿ","תּ" : "תּ","כּ" : "כּ","שׂ" : "שׂ","ײַ" : "ײַ","בֿ" : "בֿ"}
+let g:yidprecomp2noncomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ","פּ" : "פּ","פֿ" : "פֿ","תּ" : "תּ","כּ" : "כּ","שׂ" : "שׂ","ײַ" : "ײַ","בֿ" : "בֿ"}
+
+function! RegexThing() range
+    let ranger = a:firstline . "," . a:lastline
+    if g:precomposed
+        let direction = "precomposed"
+        let dictat = g:yidnoncomp2precomp
+    else
+        let direction = "decomposed"
+        let dictat = g:yidprecomp2noncomp
+    endif
+    for char in keys(dictat)
+        execute ranger . "s/" . char . "/" . dictat[char] . "/ge"        
+    endfor
+    echo "Characters now " . direction
+endfunction
 
 
 command Yidkey :call YiddishKeyBoard()
 command Precomp :call Composure()
-command CompTransAll :py regexthingall
-command CompTransSel :py regexthing
+command -range=% CompTransAll :call RegexThing()
+command -range CompTransSel :call RegexThing()
 if !exists("g:YiddishEnabled")
     let g:YiddishEnabled = 0
 endif
 if g:YiddishEnabled
-    autocmd VimEnter * call YiddishShortCuts()
+    autocmd VimEnter * :call YiddishShortCuts()
 endif
