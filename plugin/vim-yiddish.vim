@@ -86,22 +86,22 @@ def regexthing(decomposables = "URABIGDUMMY"):
     if vim.vars["precomposed"]:#seems wrong
         for char in chars.decode('utf-8'):
             vim.command("'<,'>s/"+normalize('NKD',char)+"/"+char+"/g")        
-            print "Characters now precomposed"
+            print("Characters now precomposed")
     else:
         for char in chars.decode('utf-8'):
             vim.command("'<,'>s/"+char+"/"+normalize('NKD',char)+"/g")        
-            print "Characters now decomposed"
+            print("Characters now decomposed")
 def regexthingall(decomposables = "URABIGDUMMY"):
     if decomposables == "URABIGDUMMY":
         chars = vim.current.window.buffer.vars["decompchars"]
     if vim.vars["precomposed"]:#seems wrong
         for char in chars.decode('utf-8'):
             vim.command("'<,'>s/"+normalize('NKD',char)+"/"+char+"/g")        
-            print "Characters now precomposed"
+            print("Characters now precomposed")
     else:
         for char in chars.decode('utf-8'):
             vim.command("'<,'>s/"+char+"/"+normalize('NKD',char)+"/g")        
-            print "Characters now decomposed"
+            print("Characters now decomposed")
 endpython
 
 
