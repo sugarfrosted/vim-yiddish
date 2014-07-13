@@ -6,7 +6,8 @@ To access set the shortcuts for toggling language and to compose characters use 
 `:YiddishSC` after startup or add `let g:YiddishEnabled = 1` (must be set prior to startup)
 to your .vimrc file. Non-standard mappings can be assigned to `g:YiddishKeys`. A single can
 be assigned a string and multiple as a list of strings. For them to take effect `YiddishSC`
-must be called again.
+must be called again. Tested on vim compiled with the `--with-features=huge` option, with
+and without python support.
 
 Phonetic keymaps mostly based on: http://www.shoshke.net/uyip/qwerty_os_10.htm
 
