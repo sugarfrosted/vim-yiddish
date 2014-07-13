@@ -29,36 +29,46 @@ function! YiddishShortCuts()
 endfunction
 
 command YiddishSC :call YiddishShortCuts()
-let g:precomposed=1
-function! Composure()
-    if g:precomposed
-        let g:precomposed=0
-        iabbrev כּ כּ
-        iabbrev ײַ ײַ
-        iabbrev אָ אָ
-        iabbrev אַ אַ
-        iabbrev פּ פּ
-        iabbrev פֿ פֿ
-        iabbrev שׂ שׂ
-        iabbrev וּ וּ
-        iabbrev יִ יִ
-        iabbrev תּ תּ
-        iabbrev בֿ בֿ
-        echo "Not Precomposed"
-    else
+if &encoding == 'utf-8'
+    if !exists("g:precomposed")
         let g:precomposed=1
-        iunabbrev כּ
-        iunabbrev ײַ
-        iunabbrev אָ
-        iunabbrev אַ
-        iunabbrev פּ
-        iunabbrev פֿ
-        iunabbrev שׂ
-        iunabbrev וּ
-        iunabbrev יִ
-        iunabbrev תּ
-        iunabbrev בֿ
-        echo "Precomposed"
+    endif
+else
+    let g:precomposed=0
+endif
+function! Composure()
+    if encoding == 'utf-8'
+        if g:precomposed
+            let g:precomposed=0
+            iabbrev כּ כּ
+            iabbrev ײַ ײַ
+            iabbrev אָ אָ
+            iabbrev אַ אַ
+            iabbrev פּ פּ
+            iabbrev פֿ פֿ
+            iabbrev שׂ שׂ
+            iabbrev וּ וּ
+            iabbrev יִ יִ
+            iabbrev תּ תּ
+            iabbrev בֿ בֿ
+            echo "Not Precomposed"
+        else
+            let g:precomposed=1
+            iunabbrev כּ
+            iunabbrev ײַ
+            iunabbrev אָ
+            iunabbrev אַ
+            iunabbrev פּ
+            iunabbrev פֿ
+            iunabbrev שׂ
+            iunabbrev וּ
+            iunabbrev יִ
+            iunabbrev תּ
+            iunabbrev בֿ
+            echo "Precomposed"
+        endif
+    else
+        echo "Encoding lacks precomposed varaints"
     endif
 endfunction
 
@@ -75,7 +85,7 @@ function! YiddishKeyBoard()
         echo "English"
         unmap \|
     else
-        set keymap=yiddishprecomp_utf-8
+        set keymap=yiddishprecomp
         if g:precomposed
             set spelllang=yi-pc
             echo "Precomposed Yiddish"
@@ -113,18 +123,22 @@ else
 endif
 
 function! RegexThing() range
-    let ranger = a:firstline . "," . a:lastline
-    if g:precomposed
-        let direction = "precomposed"
-        let dictat = g:yidnoncomp2precomp
+    if encoding == 'utf-8'
+        let ranger = a:firstline . "," . a:lastline
+        if g:precomposed
+            let direction = "precomposed"
+            let dictat = g:yidnoncomp2precomp
+        else
+            let direction = "decomposed"
+            let dictat = g:yidprecomp2noncomp
+        endif
+        for char in keys(dictat)
+            execute ranger . "s/" . char . "/" . dictat[char] . "/ge"        
+        endfor
+        echo "Characters now " . direction
     else
-        let direction = "decomposed"
-        let dictat = g:yidprecomp2noncomp
+        echo "Encoding lacks precomposed variants"
     endif
-    for char in keys(dictat)
-        execute ranger . "s/" . char . "/" . dictat[char] . "/ge"        
-    endfor
-    echo "Characters now " . direction
 endfunction
 
 
