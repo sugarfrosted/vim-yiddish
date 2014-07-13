@@ -1,15 +1,23 @@
 # -*- coding: utf-8 -*-
 from unicodedata import normalize
 from re import sub
+from sys import argv
 
-butts="אַאָוּיִפּפֿתּכּשׂײַבֿ"
-dickptn = "{"
-dickntp = "{"
+if len(argv) < 3:
+    butts = list("אַאָוּיִפּפֿתּכּשׂײַבֿ")
+    name = "yid"
+else:
+    butts = list(argv[1])
+    name = argv[2]
+
+dictionaryptn = "{"
+dictionaryntp = "{"
 for butt in butts:
-    dickptn += '"' + butt + '" : "' + normalize('NFD', butt) + '",'
-    dickntp += '"' + normalize('NFD', butt) + '" : "' + butt + '",'
+    dictionaryptn += '"' + butt + '" : "' + normalize('NFD', butt) + '",'
+    dictionaryntp += '"' + normalize('NFD', butt) + '" : "' + butt + '",'
 
-dickntp = "let g:yidnoncomp2precomp = " + dickntp 
-dickptn = "let g:yidprecomp2noncomp = " + dickptn 
-print(sub(r",$","}",dickntp))
-print(sub(r",$","}",dickptn))
+dictionaryntp = "let g:" + name + "noncomp2precomp = " + dictionaryntp
+dictionaryptn = "let g:" + name + "precomp2noncomp = " + dictionaryptn
+
+print(sub(r",$", "}", dictionaryntp))
+print(sub(r",$", "}", dictionaryptn))
