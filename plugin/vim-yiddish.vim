@@ -1,3 +1,4 @@
+let g:decompchars="אַאָכּפּפֿבֿתּיִוּײַשׂ"
 function! YiddishShortCuts()
     if exists("g:OldYiddishKeys")
         if type(g:OldYiddishKeys) == type("")
@@ -70,13 +71,11 @@ function! YiddishKeyBoard()
         set norightleft
         set keymap=""
         set norevins
-        let w:decompchars=""
         let w:yidl = 0
         echo "English"
         unmap \|
     else
         set keymap=yiddishprecomp_utf-8
-        let w:decompchars="אַאָכּפּפֿבֿתּיִוּײַשׂ"
         if g:precomposed
             set spelllang=yi-pc
             echo "Precomposed Yiddish"
@@ -97,8 +96,21 @@ function! YiddishKeyBoard()
     endif
 endfunction
 
-let g:yidnoncomp2precomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ","פּ" : "פּ","פֿ" : "פֿ","תּ" : "תּ","כּ" : "כּ","שׂ" : "שׂ","ײַ" : "ײַ","בֿ" : "בֿ"}
-let g:yidprecomp2noncomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ","פּ" : "פּ","פֿ" : "פֿ","תּ" : "תּ","כּ" : "כּ","שׂ" : "שׂ","ײַ" : "ײַ","בֿ" : "בֿ"}
+if has("python") || has("python3")
+python << endpython
+# -*- coding: utf-8 -*-
+import vim
+from unicodedata import normalize
+vim.vars["yidnoncomp2precomp"] = {}
+vim.vars["yidprecomp2noncomp"] = {}
+for char in vim.vars["decompchars"].decode('utf-8'):
+    vim.vars["yidnoncomp2precomp"][normalize('NFD',char)] = char
+    vim.vars["yidprecomp2noncomp"][char] = normalize('NFD',char)
+endpython
+else
+    let g:yidnoncomp2precomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ","פּ" : "פּ","פֿ" : "פֿ","תּ" : "תּ","כּ" : "כּ","שׂ" : "שׂ","ײַ" : "ײַ","בֿ" : "בֿ"}
+    let g:yidprecomp2noncomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ","פּ" : "פּ","פֿ" : "פֿ","תּ" : "תּ","כּ" : "כּ","שׂ" : "שׂ","ײַ" : "ײַ","בֿ" : "בֿ"}
+endif
 
 function! RegexThing() range
     let ranger = a:firstline . "," . a:lastline
