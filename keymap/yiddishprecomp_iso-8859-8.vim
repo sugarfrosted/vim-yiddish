@@ -36,16 +36,16 @@ x   <char-235>              "   khof
 y   <char-233><char-233>    "   tsvey vovn
 z   <char-230>              "   zayen
 A   <char-224>              "   alef
-B   <char-225>              "   veyz
+"B   <char-225>              "   veyz
 C   <char-245>              "   langer tsadek
-E   <char-233><char-233>    "   tsvey yudn
+"E   <char-233><char-233>    "   tsvey yudn
 F   <char-243>              "   langer fey
 H   <char-228>              "   khes
 I   <char-233>              "   yud
-K   <char-235>              "   kof
+"K   <char-235>              "   kof
 M   <char-238>              "   shlos mem 
 N   <char-239>              "   langer nun
-O   <char-224>              "   alef
+"O   <char-224>              "   alef
 S   <char-250>              "   sof
 T   <char-250>              "   tof
 U   <char-229>              "   yud

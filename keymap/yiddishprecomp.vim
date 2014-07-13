@@ -8,9 +8,9 @@ if encoding == 'latin1'
 endif
 
 if encoding == 'utf-8'
-	source <sfile>:p:h/yiddishpn_utf-8.vim
+	source <sfile>:p:h/yiddishprecomp_utf-8.vim
 elseif encoding == 'cp1255'
-	source <sfile>:p:h/yiddishpn_cp1255.vim
+	source <sfile>:p:h/yiddishprecomp_cp1255.vim
 else
-	source <sfile>:p:h/yiddishp_iso-8859-8.vim
+	source <sfile>:p:h/yiddishprecomp_iso-8859-8.vim
 endif

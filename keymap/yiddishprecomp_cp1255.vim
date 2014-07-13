@@ -39,16 +39,17 @@ x   <char-235>              " כ  khof
 y   <char-214><char-119>    " ײַ  pasekh tsvey vovn
 z   <char-230>              " ז  zayen
 A   <char-224>              " א  shtumer alef
-B   <char-225><char-207>    " בֿ  veyz
+"B   <char-225><char-207>    " בֿ  veyz
 C   <char-245>              " ץ  langer tsadek
-E   <char-214>              " ײ  tsvey yudn
+"E   <char-214>              " ײ  tsvey yudn
 F   <char-243>              " ף  langer fey
 H   <char-228>              " ח  khes
 I   <char-233><char-196>    " יִ  khirek yud
-K   <char-235><char-204>    " כּ  kof
+"K   <char-235><char-204>    " כּ  kof
 M   <char-238>              " ם  shlos mem 
 N   <char-239>              " ן  langer nun
-O   <char-224>              " א  shtumer alef
+"O   <char-224>              " א  shtumer alef
+P   <char-244>              "  unpointed fey/pey
 Qa  <char-199>              " ַ   pasekh
 Qe  <char-198>              " ֶ   segol
 Qi  <char-196>              " ִ   hirik

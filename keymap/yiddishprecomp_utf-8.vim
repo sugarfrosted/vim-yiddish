@@ -49,6 +49,7 @@ I   <char-0xfb1d>               " יִ  khirek yud
 M   <char-0x5dd>                " ם  shlos mem 
 N   <char-0x5df>                " ן  langer nun
 "O   <char-0x5d0>                " א  shtumer alef
+P   <char-0x5e4>                "  unpointed fey/pey
 Qa  <char-0x5b7>                " ַ   pasekh
 Qe  <char-0x5c6>                " ֶ   segol
 Qi  <char-0x5b4>                " ִ   hirik
