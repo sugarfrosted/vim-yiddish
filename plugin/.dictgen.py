@@ -4,7 +4,7 @@ from re import sub
 from sys import argv
 
 if len(argv) < 3:
-    butts = list("אַאָוּיִפּפֿתּכּשׂײַבֿ")
+    butts = list("אַאָוּיִפּפֿתּכּשׂײַבֿ".decode('utf-8'))
     name = "yid"
 else:
     butts = list(argv[1])

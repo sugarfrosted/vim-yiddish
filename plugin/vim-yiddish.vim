@@ -1,4 +1,9 @@
-let g:decompchars="אַאָכּפּפֿבֿתּיִוּײַשׂ"
+let g:defaultdecompchars="אַאָכּפּפֿבֿתּיִוּײַשׂ"
+lockvar g:defaultdecompchars
+sort(g:defaultdecompchars)
+if !exists("g:decompchars")
+    let g:decompchars = g:defaultdecompchars
+endif
 function! YiddishShortCuts()
     if exists("g:OldYiddishKeys")
         if type(g:OldYiddishKeys) == type("")
@@ -120,6 +125,9 @@ endpython
 else
     let g:yidnoncomp2precomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ","פּ" : "פּ","פֿ" : "פֿ","תּ" : "תּ","כּ" : "כּ","שׂ" : "שׂ","ײַ" : "ײַ","בֿ" : "בֿ"}
     let g:yidprecomp2noncomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ","פּ" : "פּ","פֿ" : "פֿ","תּ" : "תּ","כּ" : "כּ","שׂ" : "שׂ","ײַ" : "ײַ","בֿ" : "בֿ"}
+    if sort(list(g:decompchars)) != sort(list(g:defaultdecompchars))
+        print "Custom composing characters not supported without python support."
+    endif
 endif
 
 function! RegexThing() range
