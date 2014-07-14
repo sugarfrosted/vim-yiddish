@@ -1,6 +1,7 @@
-let g:defaultdecompchars="אַאָכּפּפֿבֿתּיִוּײַשׂ"
-lockvar g:defaultdecompchars
+let g:defaultdecompchars = ["אַ", "אָ", "כּ", "פּ", "פֿ", "בֿ", "תּ", "יִ", "וּ", "ײַ", "שׂ"]
 sort(g:defaultdecompchars)
+let g:defaultdecompchars=filter(copy(g:defaultdecompchars), 'index(g:defaultdecompchars, v:val, v:key+1)==-1')
+lockvar g:defaultdecompchars
 if !exists("g:decompchars")
     let g:decompchars = g:defaultdecompchars
 endif
@@ -16,6 +17,7 @@ function! YiddishShortCuts()
     endif
     if !exists("g:YiddishKeys")
         let g:YiddishKeys = ["t","T"]
+sort(g:defaultdecompchars)
     endif
     if type(g:YiddishKeys) == type("")
         execute "nnoremap " . mapping . " :Yidkey<Enter>"
@@ -111,22 +113,48 @@ function! YiddishKeyBoard()
     endif
 endfunction
 
-if has("python") || has("python3")
+if has("python") 
 python << endpython
 # -*- coding: utf-8 -*-
 import vim
 from unicodedata import normalize
 vim.vars["yidnoncomp2precomp"] = {}
 vim.vars["yidprecomp2noncomp"] = {}
-for char in vim.vars["decompchars"].decode('utf-8'):
+for char in vim.vars["decompchars"]:
+    charhold = char.decode('utf-8')
+    vim.vars["yidnoncomp2precomp"][normalize('NFD',charhold)] = charhold
+    vim.vars["yidprecomp2noncomp"][charhold] = normalize('NFD',charhold)
+endpython
+elseif has("python3")
+python3 << endpython3
+# -*- coding: utf-8 -*-
+import vim
+from unicodedata import normalize
+vim.vars["yidnoncomp2precomp"] = {}
+vim.vars["yidprecomp2noncomp"] = {}
+for char in vim.vars["decompchars"]:
     vim.vars["yidnoncomp2precomp"][normalize('NFD',char)] = char
     vim.vars["yidprecomp2noncomp"][char] = normalize('NFD',char)
-endpython
+endpython3
 else
+    if !exists("g:python27location")
+        let g:python27location = "python2.7"
+    endif
     let g:yidnoncomp2precomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ","פּ" : "פּ","פֿ" : "פֿ","תּ" : "תּ","כּ" : "כּ","שׂ" : "שׂ","ײַ" : "ײַ","בֿ" : "בֿ"}
     let g:yidprecomp2noncomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ","פּ" : "פּ","פֿ" : "פֿ","תּ" : "תּ","כּ" : "כּ","שׂ" : "שׂ","ײַ" : "ײַ","בֿ" : "בֿ"}
-    if sort(list(g:decompchars)) != sort(list(g:defaultdecompchars))
-        print "Custom composing characters not supported without python support."
+    if g:decompchars != g:defaultdecompchars
+        if executable("python2.7")
+            let g:yidnoncomp2precomp = {}
+            let g:yidprecomp2noncomp = {}
+            for char in decompchars
+                let dechar = system("python2.7 " . "decomp.py " . char)
+                "for testing
+                let g:yidprecomp2noncomp[char] = dechar
+                let g:yidnoncomp2precomp[dechar] = char
+            endfor
+        else
+            echo "python2.7 is required, if it has a different name you need to specify it in your .vimrc function with `let g:python27location = `. Using newer versions of python2.6 (with import from __future__) might work but it isn't supported."
+        endif
     endif
 endif
 
@@ -140,7 +168,7 @@ function! RegexThing() range
             let direction = "decomposed"
             let dictat = g:yidprecomp2noncomp
         endif
-        for char in keys(dictat)
+        for char in keys(dictat) "shit fix this I on't care right now
             execute ranger . "s/" . char . "/" . dictat[char] . "/ge"        
         endfor
         echo "Characters now " . direction
