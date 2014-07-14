@@ -6,20 +6,22 @@ if !exists("g:decompchars")
     let g:decompchars = g:defaultdecompchars
 endif
 function! YiddishShortCuts()
-    if exists("g:OldYiddishKeys")
-        if type(g:OldYiddishKeys) == type("")
-            execute "nunmap " . mapping . " :Yidkey<Enter>"
-        elseif type(g:OldYiddishKeys) == type([])
-            for mapping in g:OldYiddishKeys
-                execute "nunmap " . mapping . " :Yidkey<Enter>"
-            endfor
-        endif
-    endif
+"    if exists("g:OldYiddishKeys")
+"        if type(g:OldYiddishKeys) == type("")
+"            for mapping in g:OldYiddishKeys
+"                execute "nunmap " . mapping . " :Yidkey<Enter>"
+"            endfor
+"        elseif type(g:OldYiddishKeys) == type([])
+"            for mapping in g:OldYiddishKeys
+"                execute "nunmap " . mapping . " :Yidkey<Enter>"
+"            endfor
+"        endif
+"    endif
     if !exists("g:YiddishKeys")
         let g:YiddishKeys = ["t","T"]
-sort(g:defaultdecompchars)
     endif
     if type(g:YiddishKeys) == type("")
+        let mapping = g:YiddishKeys
         execute "nnoremap " . mapping . " :Yidkey<Enter>"
     else
         if type(g:YiddishKeys) != type([])
@@ -29,7 +31,7 @@ sort(g:defaultdecompchars)
             execute "nnoremap " . mapping . " :Yidkey<Enter>"
         endfor
     endif
-    let g:OldYiddishKeys = g:YiddishKeys
+"    let g:OldYiddishKeys = g:YiddishKeys
     noremap <Leader>tran :CompTransSel<Enter>
     noremap <Leader>tral :CompTransAll<Enter>
     inoremap <F8> <c-\><c-O>:Yidkey<Enter>
