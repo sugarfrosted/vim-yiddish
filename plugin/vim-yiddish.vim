@@ -2,9 +2,20 @@ let g:defaultdecompchars = ["אַ", "אָ", "כּ", "פּ", "פֿ", "בֿ", "תּ", "�
 sort(g:defaultdecompchars)
 let g:defaultdecompchars=filter(copy(g:defaultdecompchars), 'index(g:defaultdecompchars, v:val, v:key+1)==-1')
 lockvar g:defaultdecompchars
+let g:defaultyidnoncomp2precomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ",
+            \"פּ" : "פּ","פֿ" : "פֿ","תּ" : "תּ","כּ" : "כּ","שׂ" : "שׂ","ײַ" : "ײַ",
+            \"בֿ" : "בֿ"}
+let g:defaultyidprecomp2noncomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ",
+            \"פּ" : "פּ","פֿ" : "פֿ","תּ" : "תּ","כּ" : "כּ","שׂ" : "שׂ","ײַ" : "ײַ",
+            \"בֿ" : "בֿ"}
+lockvar g:defaultyidnoncomp2precomp
+lockvar g:defaultyidprecomp2noncomp
 if !exists("g:decompchars")
     let g:decompchars = g:defaultdecompchars
+    let g:yidnoncomp2precomp = g:defaultyidnoncomp2precomp
+    let g:yidprecomp2noncomp = g:defaultyidprecomp2noncomp
 endif
+ 
 function! YiddishShortCuts()
 "    if exists("g:OldYiddishKeys")
 "        if type(g:OldYiddishKeys) == type("")
@@ -45,35 +56,21 @@ if &encoding == 'utf-8'
 else
     let g:precomposed=0
 endif
+
 function! Composure()
-    if encoding == 'utf-8'
+    if &encoding == 'utf-8'
+        let dictat = g:yidprecomp2noncomp
         if g:precomposed
             let g:precomposed=0
-            iabbrev כּ כּ
-            iabbrev ײַ ײַ
-            iabbrev אָ אָ
-            iabbrev אַ אַ
-            iabbrev פּ פּ
-            iabbrev פֿ פֿ
-            iabbrev שׂ שׂ
-            iabbrev וּ וּ
-            iabbrev יִ יִ
-            iabbrev תּ תּ
-            iabbrev בֿ בֿ
+            for char in keys(dictat)
+                execute "iabbrev " . char . " " . dictat[char] 
+            endfor
             echo "Not Precomposed"
         else
             let g:precomposed=1
-            iunabbrev כּ
-            iunabbrev ײַ
-            iunabbrev אָ
-            iunabbrev אַ
-            iunabbrev פּ
-            iunabbrev פֿ
-            iunabbrev שׂ
-            iunabbrev וּ
-            iunabbrev יִ
-            iunabbrev תּ
-            iunabbrev בֿ
+            for char in keys(dictat)
+                execute "iunabbrev " . dictat[char]
+            endfor
             echo "Precomposed"
         endif
     else
@@ -139,29 +136,31 @@ for char in vim.vars["decompchars"]:
     vim.vars["yidprecomp2noncomp"][char] = normalize('NFD',char)
 endpython3
 else
+    "let g:python27location = "jdiohadsiuhfiuhewiuhqf"
+    "testing here
     if !exists("g:python27location")
         let g:python27location = "python2.7"
     endif
-    let g:yidnoncomp2precomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ","פּ" : "פּ","פֿ" : "פֿ","תּ" : "תּ","כּ" : "כּ","שׂ" : "שׂ","ײַ" : "ײַ","בֿ" : "בֿ"}
-    let g:yidprecomp2noncomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ","פּ" : "פּ","פֿ" : "פֿ","תּ" : "תּ","כּ" : "כּ","שׂ" : "שׂ","ײַ" : "ײַ","בֿ" : "בֿ"}
     if g:decompchars != g:defaultdecompchars
-        if executable("python2.7")
+        if executable(g:python27location)
+            let s:path = fnamemodify(resolve(expand('<sfile>:p')), ':h')
             let g:yidnoncomp2precomp = {}
             let g:yidprecomp2noncomp = {}
             for char in decompchars
-                let dechar = system("python2.7 " . "decomp.py " . char)
-                "for testing
+                let dechar = system(g:python27location . " " . s:path . "/decomp.py " . char)
                 let g:yidprecomp2noncomp[char] = dechar
                 let g:yidnoncomp2precomp[dechar] = char
             endfor
         else
-            echo "python2.7 is required, if it has a different name you need to specify it in your .vimrc function with `let g:python27location = `. Using newer versions of python2.6 (with import from __future__) might work but it isn't supported."
+            echo "python2.7 is required for custom mapping, if it has a different name you need to specify it in your .vimrc function with `let g:python27location = `. Using earlier versions of python might work but it isn't supported. Python 3 will not."
+            let g:yidnoncomp2precomp = g:defaultyidnoncomp2precomp
+            let g:yidprecomp2noncomp = g:defaultyidprecomp2noncomp
         endif
     endif
 endif
 
 function! RegexThing() range
-    if encoding == 'utf-8'
+    if &encoding == 'utf-8'
         let ranger = a:firstline . "," . a:lastline
         if g:precomposed
             let direction = "precomposed"
@@ -190,3 +189,4 @@ endif
 if g:YiddishEnabled
     autocmd VimEnter * :call YiddishShortCuts()
 endif
+let g:urmom = system(g:python27location . " decomp.py " . "אַ")
