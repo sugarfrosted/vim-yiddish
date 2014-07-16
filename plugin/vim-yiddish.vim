@@ -112,7 +112,18 @@ function! YiddishKeyBoard()
     endif
 endfunction
 
-if has("python") 
+if has("python3")
+python3 << endpython3
+# -*- coding: utf-8 -*-
+import vim
+from unicodedata import normalize
+vim.vars["yidnoncomp2precomp"] = {}
+vim.vars["yidprecomp2noncomp"] = {}
+for char in vim.vars["decompchars"]:
+    vim.vars["yidnoncomp2precomp"][normalize('NFD',char)] = char
+    vim.vars["yidprecomp2noncomp"][char] = normalize('NFD',char)
+endpython3
+elseif has("python") 
 python << endpython
 # -*- coding: utf-8 -*-
 import vim
@@ -124,23 +135,21 @@ for char in vim.vars["decompchars"]:
     vim.vars["yidnoncomp2precomp"][normalize('NFD',charhold)] = charhold
     vim.vars["yidprecomp2noncomp"][charhold] = normalize('NFD',charhold)
 endpython
-elseif has("python3")
-python3 << endpython3
-# -*- coding: utf-8 -*-
-import vim
-from unicodedata import normalize
-vim.vars["yidnoncomp2precomp"] = {}
-vim.vars["yidprecomp2noncomp"] = {}
-for char in vim.vars["decompchars"]:
-    vim.vars["yidnoncomp2precomp"][normalize('NFD',char)] = char
-    vim.vars["yidprecomp2noncomp"][char] = normalize('NFD',char)
-endpython3
 else
     "let g:python27location = "jdiohadsiuhfiuhewiuhqf"
     "testing here
     if !exists("g:python27location")
         let g:python27location = "python2.7"
     endif
+"    let g:YidPythonVersion = system("Python -V")
+"    let g:YidPythonVersion = split(g:YidPythonVersion)[1]
+"    let g:YidPythonVersion = split(g:YidPythonVersion, '.')
+"    let g:My_Test = g:YidPythonVersion
+"    if g:YidPythonVersion >= ["3","0","0"]:
+"        let scriptplace = s:path . "/decomp3.py"
+"    elseif g:YidPythonVersion >= ["2","6","0"]
+"        let scriptplace = s:path . "/decomp.py"
+"    endif
     if g:decompchars != g:defaultdecompchars
         if executable(g:python27location)
             let s:path = fnamemodify(resolve(expand('<sfile>:p')), ':h')
