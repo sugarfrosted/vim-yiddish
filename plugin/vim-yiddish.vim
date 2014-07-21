@@ -18,6 +18,48 @@ if !exists("g:decompchars")
     let g:yidnoncomp2precomp = g:defaultyidnoncomp2precomp
     let g:yidprecomp2noncomp = g:defaultyidprecomp2noncomp
 endif
+sort(g:decompchars)
+let g:decompchars=filter(copy(g:decompchars), 'index(g:decompchars, v:val, v:key+1)==-1')
+if g:decompchars == g:defaultdecompchars
+    let g:yidnoncomp2precomp = g:defaultyidnoncomp2precomp
+    let g:yidprecomp2noncomp = g:defaultyidprecomp2noncomp
+elseif executable("uconv")
+    let g:yidnoncomp2precomp = {}
+    let g:yidprecomp2noncomp = {}
+    for char in g:decompchars
+        let dechar = system("uconv -x any-nfd <<<" . char)
+        let dechar = substitute(dechar,"\n","","ge") 
+        let g:yidprecomp2noncomp[char] = dechar
+        let g:yidnoncomp2precomp[dechar] = char
+    endfor
+elseif has("python") && g:debugwithPY 
+python << endpython
+import vim
+from unicodedata import normalize
+vim.vars["yidnoncomp2precomp"] = {}
+vim.vars["yidprecomp2noncomp"] = {}
+for char in vim.vars["decompchars"]:
+    charhold = char.decode('utf-8')
+    vim.vars["yidnoncomp2precomp"][normalize('NFD',charhold)] = charhold
+    vim.vars["yidprecomp2noncomp"][charhold] = normalize('NFD',charhold)
+endpython
+elseif executable(g:python27location)
+    if !exists("g:python27location")
+        let g:python27location = "python2.7"
+    endif
+    let s:path = fnamemodify(resolve(expand('<sfile>:p')), ':h')
+    let g:yidnoncomp2precomp = {}
+    let g:yidprecomp2noncomp = {}
+    for char in g:decompchars
+        let dechar = system(g:python27location . " " . s:path . "/decomp.py " . char)
+        let g:yidprecomp2noncomp[char] = dechar
+        let g:yidnoncomp2precomp[dechar] = char
+    endfor
+else
+    echo "python2.7 or uconv is required for custom mapping, if it has a different name you need to specify it in your .vimrc function with `let g:python27location = `. Using earlier versions of python might work but it isn't supported. Python 3 will not."
+    let g:yidnoncomp2precomp = g:defaultyidnoncomp2precomp
+    let g:yidprecomp2noncomp = g:defaultyidprecomp2noncomp
+endif
  
 function! YiddishShortCuts()
 "    if exists("g:OldYiddishKeys")
@@ -115,71 +157,6 @@ function! YiddishKeyBoard()
     endif
 endfunction
 
-if g:decompchars != g:defaultdecompchars
-
-"disabled.
-if has("python3") && 0 
-python3 << endpython3
-import vim
-from unicodedata import normalize
-vim.vars["yidnoncomp2precomp"] = {}
-vim.vars["yidprecomp2noncomp"] = {}
-for char in vim.vars["decompchars"]:
-    vim.vars["yidnoncomp2precomp"][normalize('NFD',char)] = char
-    vim.vars["yidprecomp2noncomp"][char] = normalize('NFD',char)
-endpython3
-
-elseif has("python")&& g:debugwithPY 
-python << endpython
-import vim
-from unicodedata import normalize
-vim.vars["yidnoncomp2precomp"] = {}
-vim.vars["yidprecomp2noncomp"] = {}
-for char in vim.vars["decompchars"]:
-    charhold = char.decode('utf-8')
-    vim.vars["yidnoncomp2precomp"][normalize('NFD',charhold)] = charhold
-    vim.vars["yidprecomp2noncomp"][charhold] = normalize('NFD',charhold)
-endpython
-else
-    "let g:python27location = "jdiohadsiuhfiuhewiuhqf"
-    "testing here
-    if !exists("g:python27location")
-        let g:python27location = "python2.7"
-    endif
-"    let g:YidPythonVersion = system("Python -V")
-"    let g:YidPythonVersion = split(g:YidPythonVersion)[1]
-"    let g:YidPythonVersion = split(g:YidPythonVersion, '.')
-"    let g:My_Test = g:YidPythonVersion
-"    if g:YidPythonVersion >= ["3","0","0"]:
-"        let scriptplace = s:path . "/decomp3.py"
-"    elseif g:YidPythonVersion >= ["2","6","0"]
-"        let scriptplace = s:path . "/decomp.py"
-"    endif
-        if executable("uconv")
-            let g:yidnoncomp2precomp = {}
-            let g:yidprecomp2noncomp = {}
-            for char in g:decompchars
-                let dechar = system("uconv -x any-nfd <<<" . char)
-                let dechar = substitute(dechar,"\n","","ge") 
-                let g:yidprecomp2noncomp[char] = dechar
-                let g:yidnoncomp2precomp[dechar] = char
-            endfor
-        elseif executable(g:python27location)
-            let s:path = fnamemodify(resolve(expand('<sfile>:p')), ':h')
-            let g:yidnoncomp2precomp = {}
-            let g:yidprecomp2noncomp = {}
-            for char in g:decompchars
-                let dechar = system(g:python27location . " " . s:path . "/decomp.py " . char)
-                let g:yidprecomp2noncomp[char] = dechar
-                let g:yidnoncomp2precomp[dechar] = char
-            endfor
-        else
-            echo "python2.7 or uconv is required for custom mapping, if it has a different name you need to specify it in your .vimrc function with `let g:python27location = `. Using earlier versions of python might work but it isn't supported. Python 3 will not."
-            let g:yidnoncomp2precomp = g:defaultyidnoncomp2precomp
-            let g:yidprecomp2noncomp = g:defaultyidprecomp2noncomp
-        endif
-    endif
-endif
 
 function! RegexThing() range
     if &encoding == 'utf-8'
