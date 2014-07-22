@@ -1,8 +1,10 @@
+scriptencoding utf-8
 if !exists("g:debugwithPY")
     let g:debugwithPY = 1
 endif
 let g:defaultdecompchars = ["אַ", "אָ", "כּ", "פּ", "פֿ", "בֿ", "תּ", "יִ", "וּ", "ײַ", "שׂ"]
-sort(g:defaultdecompchars)
+let g:decompchars = ["אָ", "כּ", "פּ", "פֿ", "בֿ", "תּ", "יִ", "וּ", "ײַ", "שׂ"]
+call sort(g:defaultdecompchars)
 let g:defaultdecompchars=filter(copy(g:defaultdecompchars), 'index(g:defaultdecompchars, v:val, v:key+1)==-1')
 lockvar g:defaultdecompchars
 let g:defaultyidnoncomp2precomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ",
@@ -14,25 +16,25 @@ let g:defaultyidprecomp2noncomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ",
 lockvar g:defaultyidnoncomp2precomp
 lockvar g:defaultyidprecomp2noncomp
 if !exists("g:decompchars")
-    let g:decompchars = g:defaultdecompchars
-    let g:yidnoncomp2precomp = g:defaultyidnoncomp2precomp
-    let g:yidprecomp2noncomp = g:defaultyidprecomp2noncomp
+    let g:decompchars = copy(g:defaultdecompchars)
+    let g:yidnoncomp2precomp = copy(g:defaultyidnoncomp2precomp)
+    let g:yidprecomp2noncomp = copy(g:defaultyidprecomp2noncomp)
 endif
-sort(g:decompchars)
+call sort(g:decompchars)
 let g:decompchars=filter(copy(g:decompchars), 'index(g:decompchars, v:val, v:key+1)==-1')
 if g:decompchars == g:defaultdecompchars
-    let g:yidnoncomp2precomp = g:defaultyidnoncomp2precomp
-    let g:yidprecomp2noncomp = g:defaultyidprecomp2noncomp
+    let g:yidnoncomp2precomp = copy(g:defaultyidnoncomp2precomp)
+    let g:yidprecomp2noncomp = copy(g:defaultyidprecomp2noncomp)
 elseif executable("uconv")
     let g:yidnoncomp2precomp = {}
     let g:yidprecomp2noncomp = {}
-    for char in g:decompchars
-        let dechar = system("uconv -x any-nfd <<<" . char)
-        let dechar = substitute(dechar,"\n","","ge") 
-        let g:yidprecomp2noncomp[char] = dechar
-        let g:yidnoncomp2precomp[dechar] = char
+    for s:char in g:decompchars
+        let s:dechar = system("uconv -x any-nfd <<<" . s:char)
+        let s:dechar = substitute(s:dechar,"\n","","g") 
+        let g:yidprecomp2noncomp[s:char] = s:dechar
+        let g:yidnoncomp2precomp[s:dechar] = s:char
     endfor
-elseif has("python") && g:debugwithPY 
+elseif has("python") 
 python << endpython
 import vim
 from unicodedata import normalize
@@ -50,15 +52,15 @@ elseif executable(g:python27location)
     let s:path = fnamemodify(resolve(expand('<sfile>:p')), ':h')
     let g:yidnoncomp2precomp = {}
     let g:yidprecomp2noncomp = {}
-    for char in g:decompchars
-        let dechar = system(g:python27location . " " . s:path . "/decomp.py " . char)
-        let g:yidprecomp2noncomp[char] = dechar
-        let g:yidnoncomp2precomp[dechar] = char
+    for s:char in g:decompchars
+        let s:dechar = system(g:python27location . " " . s:path . "/decomp.py " . s:char)
+        let g:yidprecomp2noncomp[s:char] = s:dechar
+        let g:yidnoncomp2precomp[s:dechar] = s:char
     endfor
 else
     echo "python2.7 or uconv is required for custom mapping, if it has a different name you need to specify it in your .vimrc function with `let g:python27location = `. Using earlier versions of python might work but it isn't supported. Python 3 will not."
-    let g:yidnoncomp2precomp = g:defaultyidnoncomp2precomp
-    let g:yidprecomp2noncomp = g:defaultyidprecomp2noncomp
+    let g:yidnoncomp2precomp = copy(g:defaultyidnoncomp2precomp)
+    let g:yidprecomp2noncomp = copy(g:defaultyidprecomp2noncomp)
 endif
  
 function! YiddishShortCuts()
