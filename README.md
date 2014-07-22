@@ -2,7 +2,7 @@ My little Yiddish settings and keymaps for Vim
 
 Dependencies: For normal usage require `+arabic` or at least `+rightleft` , which is included in Vim compiled with `--with-features=huge` and `--with-features=big`. In order to use custom composition lists the possible dependencies are: Compiled with Python Support (2.7), the program `uconv`, or any installation of `python2.7`(by default uses the program named `python2.7` to select another name or to use a complete path modify `let g:python27location="<location>"`, 2.6 should also work, but is untested.) 
 
-Apple's terminal does not appear compatible with right to left characters in vim, as it displays characters based on their unicode direction. For a replacement I recommend iTerm2, which can be found at iTerm2.com. Use either the current beta or the original release. The update of the original release can't display combining characters.
+Apple's terminal does not appear compatible with right to left characters in vim, as it displays characters based on their unicode direction. For a replacement I recommend iTerm2, which can be found at http://iTerm2.com. Use either the current beta or the original release. The update of the original release can't display combining characters.
 
 Install with pathogen by cloning into your bundle folder.
 
