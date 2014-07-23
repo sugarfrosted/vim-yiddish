@@ -3,7 +3,8 @@ if !exists("g:debugwithPY")
     let g:debugwithPY = 1
 endif
 let g:defaultdecompchars = ["אַ", "אָ", "כּ", "פּ", "פֿ", "בֿ", "תּ", "יִ", "וּ", "ײַ", "שׂ"]
-let g:decompchars = ["אָ", "כּ", "פּ", "פֿ", "בֿ", "תּ", "יִ", "וּ", "ײַ", "שׂ"]
+"for testing v
+"let g:decompchars = ["אָ", "כּ", "פּ", "פֿ", "בֿ", "תּ", "יִ", "וּ", "ײַ", "שׂ"]
 call sort(g:defaultdecompchars)
 let g:defaultdecompchars=filter(copy(g:defaultdecompchars), 'index(g:defaultdecompchars, v:val, v:key+1)==-1')
 lockvar g:defaultdecompchars
@@ -109,12 +110,14 @@ function! Composure()
         let dictat = g:yidprecomp2noncomp
         if g:precomposed
             let g:precomposed=0
+            set spelllang=yi
             for char in keys(dictat)
                 execute "iabbrev " . char . " " . dictat[char] 
             endfor
             echo "Not Precomposed"
         else
             let g:precomposed=1
+            set spelllang=yi-pc
             for char in keys(dictat)
                 execute "iunabbrev " . dictat[char]
             endfor
