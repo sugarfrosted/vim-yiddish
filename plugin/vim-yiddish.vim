@@ -1,4 +1,15 @@
 scriptencoding utf-8
+function! s:get_visual_selection()
+    " Why is this not a built-in Vim script function?!
+    " ToDo: give credit in README.md to:
+    " http://stackoverflow.com/questions/1533565/how-to-get-visually-selected-text-in-vimscript
+    let [lnum1, col1] = getpos("'<")[1:2]
+    let [lnum2, col2] = getpos("'>")[1:2]
+    let lines = getline(lnum1, lnum2)
+    let lines[-1] = lines[-1][: col2 - (&selection == 'inclusive' ? 1 : 2)]
+    let lines[0] = lines[0][col1 - 1:]
+    return join(lines, "\n")
+endfunction
 if !exists("g:debugwithPY")
     let g:debugwithPY = 1
 endif
@@ -140,8 +151,10 @@ function! YiddishKeyBoard()
         let w:yidl = 0
         echo "English"
         unmap \|
+        unmap zg
     else
         set keymap=yiddishprecomp
+        noremap zg :call GoodBoth()
         if g:precomposed
             set spelllang=yi-pc
             echo "Precomposed Yiddish"
@@ -182,6 +195,69 @@ function! RegexThing() range
     endif
 endfunction
 
+function! ComposeString(string)
+    let workingstr = copy(a:string)
+    if &encoding == 'utf-8'
+        for item in keys(g:yidnoncomp2precomp)
+           let workingstr = substitute(workingstr, item, g:yidnoncomp2precomp[item],"g")
+        endfor
+    endif
+    return workingstr
+endfunction
+        
+
+function! DeComposeString(string)
+    let workingstr = copy(a:string)
+    if &encoding == 'utf-8'
+        for item in keys(g:yidnoncomp2precomp)
+           let workingstr = substitute(workingstr, item, g:yidprecomp2noncomp[item],"g")
+        endfor
+    endif
+    return workingstr
+endfunction
+
+function! Goodboth()
+     let spellhold = &spelllang
+     if &spelllang == "yi" || &spelllang == "yi-pc"
+         if mode() == "v" && getpos("'<")[1] == getpos("'>")[1]
+             let stringtemp = s:get_visual_selection()
+             set spelllang=yi-pc
+             let stringtempd = decomposestring(stringtemp)
+             execute "spellgood " . stringtempd
+             set spelllang=yi
+             let stringtempc = composestring(stringtemp)
+             execute "spellgood " . stringtempc
+         elseif mode() == "n"
+            let wordtemp = expand("<cword>")
+            execute "spellgood " . wordtemp
+         endif
+     else
+         unmap zg
+     endif
+     let &spelllang = spellhold
+endfunction
+
+function! Undoboth()
+    
+    let spellhold = &spelllang
+    if &spelllang == "yi" || &spelllang == "yi-pc"
+        if mode() == "v" && getpos("'<")[1] == getpos("'>")[1]
+            let stringtemp = s:get_visual_selection()
+            set spelllang=yi-pc
+            let stringtempd = decomposestring(stringtemp)
+            execute "spellgood " . stringtempd
+            set spelllang=yi
+            let stringtempc = composestring(stringtemp)
+            execute "spellgood " . stringtempc
+        elseif mode() == "n"
+            let wordtemp = expand("<cword>")
+            execute "spellgood " . wordtemp
+        endif
+    else
+        unmap zg
+    endif
+    let &spelllang = spellhold
+endfunction
 
 command Yidkey :call YiddishKeyBoard()
 command Precomp :call Composure()
