@@ -16,8 +16,7 @@ endif
 let g:defaultdecompchars = ["אַ", "אָ", "כּ", "פּ", "פֿ", "בֿ", "תּ", "יִ", "וּ", "ײַ", "שׂ"]
 "for testing v
 "let g:decompchars = ["אָ", "כּ", "פּ", "פֿ", "בֿ", "תּ", "יִ", "וּ", "ײַ", "שׂ"]
-call sort(g:defaultdecompchars)
-let g:defaultdecompchars=filter(copy(g:defaultdecompchars), 'index(g:defaultdecompchars, v:val, v:key+1)==-1')
+call uniq(sort(g:defaultdecompchars))
 lockvar g:defaultdecompchars
 let g:defaultyidnoncomp2precomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ",
             \"פּ" : "פּ","פֿ" : "פֿ","תּ" : "תּ","כּ" : "כּ","שׂ" : "שׂ","ײַ" : "ײַ",
@@ -32,8 +31,7 @@ if !exists("g:decompchars")
     let g:yidnoncomp2precomp = copy(g:defaultyidnoncomp2precomp)
     let g:yidprecomp2noncomp = copy(g:defaultyidprecomp2noncomp)
 endif
-call sort(g:decompchars)
-let g:decompchars=filter(copy(g:decompchars), 'index(g:decompchars, v:val, v:key+1)==-1')
+call uniq(sort(g:decompchars))
 if g:decompchars == g:defaultdecompchars
     let g:yidnoncomp2precomp = copy(g:defaultyidnoncomp2precomp)
     let g:yidprecomp2noncomp = copy(g:defaultyidprecomp2noncomp)
@@ -76,17 +74,6 @@ else
 endif
  
 function! YiddishShortCuts()
-"    if exists("g:OldYiddishKeys")
-"        if type(g:OldYiddishKeys) == type("")
-"            for mapping in g:OldYiddishKeys
-"                execute "nunmap " . mapping . " :Yidkey<Enter>"
-"            endfor
-"        elseif type(g:OldYiddishKeys) == type([])
-"            for mapping in g:OldYiddishKeys
-"                execute "nunmap " . mapping . " :Yidkey<Enter>"
-"            endfor
-"        endif
-"    endif
     if !exists("g:YiddishKeys")
         let g:YiddishKeys = ["t","T"]
     endif
@@ -101,7 +88,6 @@ function! YiddishShortCuts()
             execute "nnoremap " . mapping . " :Yidkey<Enter>"
         endfor
     endif
-"    let g:OldYiddishKeys = g:YiddishKeys
     noremap <Leader>tran :CompTransSel<Enter>
     noremap <Leader>tral :CompTransAll<Enter>
     inoremap <F8> <c-\><c-O>:Yidkey<Enter>
@@ -135,7 +121,7 @@ function! Composure()
             echo "Precomposed"
         endif
     else
-        echo "Encoding lacks precomposed varaints"
+        echo "Encoding lacks precomposed variants"
     endif
 endfunction
 
@@ -143,7 +129,7 @@ function! YiddishKeyBoard()
     if !exists("w:yidl") "sets default value for w:yidl if not yet set
         let w:yidl=0 "assumed initial value
     endif
-    if w:yidl "turns off yiddish mode and switches back to english
+    if w:yidl "turns off Yiddish mode and switches back to English
         set spelllang=en_us
         set norightleft
         set keymap=""
@@ -152,9 +138,11 @@ function! YiddishKeyBoard()
         echo "English"
         unmap \|
         unmap zg
+        unmap zu
     else
         set keymap=yiddishprecomp
-        noremap zg :call GoodBoth()
+        noremap zg :call GoodBoth()<return>
+        noremap zu :call UndoBoth()<return>
         if g:precomposed
             set spelllang=yi-pc
             echo "Precomposed Yiddish"
@@ -186,7 +174,7 @@ function! RegexThing() range
             let direction = "decomposed"
             let dictat = g:yidprecomp2noncomp
         endif
-        for char in keys(dictat) "shit fix this I on't care right now
+        for char in keys(dictat) 
             execute ranger . "s/" . char . "/" . dictat[char] . "/ge"        
         endfor
         echo "Characters now " . direction
@@ -216,7 +204,7 @@ function! DeComposeString(string)
     return workingstr
 endfunction
 
-function! Goodboth()
+function! GoodBoth()
      let spellhold = &spelllang
      if &spelllang == "yi" || &spelllang == "yi-pc"
          if mode() == "v" && getpos("'<")[1] == getpos("'>")[1]
@@ -228,35 +216,39 @@ function! Goodboth()
              let stringtempc = composestring(stringtemp)
              execute "spellgood " . stringtempc
          elseif mode() == "n"
-            let wordtemp = expand("<cword>")
-            execute "spellgood " . wordtemp
+            let stringtemp = expand("<cword>")
+            execute "spellgood " . stringtemp
          endif
-     else
-         unmap zg
+         if exists("l:stringtemp")
+             if !exists("s:addedlist")
+                 let s:YIaddedlist = [stringtemp]
+             else
+                 call add(s:YIaddedlist, stringtemp)
+             endif
+         endif
      endif
      let &spelllang = spellhold
 endfunction
 
-function! Undoboth()
-    
-    let spellhold = &spelllang
-    if &spelllang == "yi" || &spelllang == "yi-pc"
-        if mode() == "v" && getpos("'<")[1] == getpos("'>")[1]
-            let stringtemp = s:get_visual_selection()
+function! UndoBoth()
+    if exist("s:YIaddedlist")
+        let spellhold = &spelllang
+        if (&spelllang == "yi" || &spelllang == "yi-pc") && s:YIaddedlist
+            let coord = len(s:YIaddedlist) - 1
+            let stringtemp = s:YIaddedlist[coord]
+            let s:YIaddedlist = remove(s:YIaddedlist, coord - 1)
             set spelllang=yi-pc
             let stringtempd = decomposestring(stringtemp)
-            execute "spellgood " . stringtempd
+            execute "spellundo " . stringtempd
             set spelllang=yi
             let stringtempc = composestring(stringtemp)
-            execute "spellgood " . stringtempc
-        elseif mode() == "n"
-            let wordtemp = expand("<cword>")
-            execute "spellgood " . wordtemp
+            execute "spellundo " . stringtempc
         endif
-    else
-        unmap zg
+        let &spelllang = spellhold
     endif
-    let &spelllang = spellhold
+    if !exist("s:YIaddedlist") || !s:YIaddedlist
+        echo "Undo tree empty"
+    endif
 endfunction
 
 command Yidkey :call YiddishKeyBoard()
