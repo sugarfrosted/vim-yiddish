@@ -13,36 +13,36 @@ endfunction
 if !exists("g:debugwithPY")
     let g:debugwithPY = 1
 endif
-let g:defaultdecompchars = ["אַ", "אָ", "כּ", "פּ", "פֿ", "בֿ", "תּ", "יִ", "וּ", "ײַ", "שׂ"]
+let s:defaultdecompchars = ["אַ", "אָ", "כּ", "פּ", "פֿ", "בֿ", "תּ", "יִ", "וּ", "ײַ", "שׂ"]
 "for testing v
-"let g:decompchars = ["אָ", "כּ", "פּ", "פֿ", "בֿ", "תּ", "יִ", "וּ", "ײַ", "שׂ"]
-call uniq(sort(g:defaultdecompchars))
-lockvar g:defaultdecompchars
-let g:defaultyidnoncomp2precomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ",
+"let g:yiddish_decomp_chars = ["אָ", "כּ", "פּ", "פֿ", "בֿ", "תּ", "יִ", "וּ", "ײַ", "שׂ"]
+call uniq(sort(s:defaultdecompchars))
+lockvar s:defaultdecompchars
+let s:defaultyidnoncomp2precomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ",
             \"פּ" : "פּ","פֿ" : "פֿ","תּ" : "תּ","כּ" : "כּ","שׂ" : "שׂ","ײַ" : "ײַ",
             \"בֿ" : "בֿ"}
-let g:defaultyidprecomp2noncomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ",
+let s:defaultyidprecomp2noncomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ",
             \"פּ" : "פּ","פֿ" : "פֿ","תּ" : "תּ","כּ" : "כּ","שׂ" : "שׂ","ײַ" : "ײַ",
             \"בֿ" : "בֿ"}
-lockvar g:defaultyidnoncomp2precomp
-lockvar g:defaultyidprecomp2noncomp
-if !exists("g:decompchars")
-    let g:decompchars = copy(g:defaultdecompchars)
-    let g:yidnoncomp2precomp = copy(g:defaultyidnoncomp2precomp)
-    let g:yidprecomp2noncomp = copy(g:defaultyidprecomp2noncomp)
+lockvar s:defaultyidnoncomp2precomp
+lockvar s:defaultyidprecomp2noncomp
+if !exists("g:yiddish_decomp_chars")
+    let g:yiddish_decomp_chars = copy(s:defaultdecompchars)
+    let s:yidnoncomp2precomp = copy(s:defaultyidnoncomp2precomp)
+    let s:yidprecomp2noncomp = copy(s:defaultyidprecomp2noncomp)
 endif
-call uniq(sort(g:decompchars))
-if g:decompchars == g:defaultdecompchars
-    let g:yidnoncomp2precomp = copy(g:defaultyidnoncomp2precomp)
-    let g:yidprecomp2noncomp = copy(g:defaultyidprecomp2noncomp)
+call uniq(sort(g:yiddish_decomp_chars))
+if g:yiddish_decomp_chars == s:defaultdecompchars
+    let s:yidnoncomp2precomp = copy(s:defaultyidnoncomp2precomp)
+    let s:yidprecomp2noncomp = copy(s:defaultyidprecomp2noncomp)
 elseif executable("uconv")
-    let g:yidnoncomp2precomp = {}
-    let g:yidprecomp2noncomp = {}
-    for s:char in g:decompchars
+    let s:yidnoncomp2precomp = {}
+    let s:yidprecomp2noncomp = {}
+    for s:char in g:yiddish_decomp_chars
         let s:dechar = system("uconv -x any-nfd <<<" . s:char)
         let s:dechar = substitute(s:dechar,"\n","","g") 
-        let g:yidprecomp2noncomp[s:char] = s:dechar
-        let g:yidnoncomp2precomp[s:dechar] = s:char
+        let s:yidprecomp2noncomp[s:char] = s:dechar
+        let s:yidnoncomp2precomp[s:dechar] = s:char
     endfor
 elseif has("python") 
 python << endpython
@@ -60,17 +60,17 @@ elseif executable(g:python27location)
         let g:python27location = "python2.7"
     endif
     let s:path = fnamemodify(resolve(expand('<sfile>:p')), ':h')
-    let g:yidnoncomp2precomp = {}
-    let g:yidprecomp2noncomp = {}
-    for s:char in g:decompchars
+    let s:yidnoncomp2precomp = {}
+    let s:yidprecomp2noncomp = {}
+    for s:char in g:yiddish_decomp_chars
         let s:dechar = system(g:python27location . " " . s:path . "/decomp.py " . s:char)
-        let g:yidprecomp2noncomp[s:char] = s:dechar
-        let g:yidnoncomp2precomp[s:dechar] = s:char
+        let s:yidprecomp2noncomp[s:char] = s:dechar
+        let s:yidnoncomp2precomp[s:dechar] = s:char
     endfor
 else
     echo "python2.7 or uconv is required for custom mapping, if it has a different name you need to specify it in your .vimrc function with `let g:python27location = `. Using earlier versions of python might work but it isn't supported. Python 3 will not."
-    let g:yidnoncomp2precomp = copy(g:defaultyidnoncomp2precomp)
-    let g:yidprecomp2noncomp = copy(g:defaultyidprecomp2noncomp)
+    let s:yidnoncomp2precomp = copy(s:defaultyidnoncomp2precomp)
+    let s:yidprecomp2noncomp = copy(s:defaultyidprecomp2noncomp)
 endif
  
 function! YiddishShortCuts()
@@ -104,7 +104,7 @@ endif
 
 function! Composure()
     if &encoding == 'utf-8'
-        let dictat = g:yidprecomp2noncomp
+        let dictat = s:yidprecomp2noncomp
         if g:precomposed
             let g:precomposed=0
             set spelllang=yi
@@ -169,10 +169,10 @@ function! RegexThing() range
         let ranger = a:firstline . "," . a:lastline
         if g:precomposed
             let direction = "precomposed"
-            let dictat = g:yidnoncomp2precomp
+            let dictat = s:yidnoncomp2precomp
         else
             let direction = "decomposed"
-            let dictat = g:yidprecomp2noncomp
+            let dictat = s:yidprecomp2noncomp
         endif
         for char in keys(dictat) 
             execute ranger . "s/" . char . "/" . dictat[char] . "/ge"        
@@ -186,8 +186,8 @@ endfunction
 function! ComposeString(string)
     let workingstr = copy(a:string)
     if &encoding == 'utf-8'
-        for item in keys(g:yidnoncomp2precomp)
-           let workingstr = substitute(workingstr, item, g:yidnoncomp2precomp[item],"g")
+        for item in keys(s:yidnoncomp2precomp)
+           let workingstr = substitute(workingstr, item, s:yidnoncomp2precomp[item],"g")
         endfor
     endif
     return workingstr
@@ -197,8 +197,8 @@ endfunction
 function! DeComposeString(string)
     let workingstr = copy(a:string)
     if &encoding == 'utf-8'
-        for item in keys(g:yidnoncomp2precomp)
-           let workingstr = substitute(workingstr, item, g:yidprecomp2noncomp[item],"g")
+        for item in keys(s:yidnoncomp2precomp)
+           let workingstr = substitute(workingstr, item, s:yidprecomp2noncomp[item],"g")
         endfor
     endif
     return workingstr

@@ -1,0 +1,43 @@
+*yiddish-keymaps.txt*
+THE MAPS~
+
+a    אַ   Pasekh Alef
+b    ב   Beys
+c    צ   Tsadik
+d    ד   Daled
+e    ע   Ayen
+f    פֿ   Fey
+g    ג   Giml
+h    ה   Hey 
+i    י   Yud
+j    ײ   Tsvey Yudn
+k    ק   Kuf
+l    ל   Lamed
+m    מ   Mem
+n    נ   Nun
+o    אָ   Komets Alef
+p    פּ   Pey
+q    כּ   Kof
+r    ר   Reysh
+s    ס   Samekh
+t    ט   Tes
+u    ו   Vov
+v    װ   Tsvey Vovn
+w    ש   Shin
+x    כ   Khof
+y    ײַ   Pasekh Tsvey Yudn
+z    ז   Zayen
+A    א   Alef
+C    ץ   Langer Tsadik
+F    ף   Langer Fey
+H    ח   Khes
+I    יִ   Khirek Yud
+M    ם   Shlos Mem
+N    ן   Langer Nun
+P    פ   Pey/Fey mit nit keyn nikud
+S    ת   Sof
+T    תּ   Tof
+U    וּ   Khirek Vov
+W    שׂ   Sin
+X    ך   Langer Khof
+Y    ױ   Vov Yud
