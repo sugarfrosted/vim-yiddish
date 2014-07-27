@@ -1,0 +1,15 @@
+yiddish	yiddish.txt	/*yiddish*
+yiddish-complete-keymap	yiddish-keymaps.txt	/*yiddish-complete-keymap*
+yiddish-custom-keymap	yiddish.txt	/*yiddish-custom-keymap*
+yiddish-custom-keymap-exceptions	yiddish.txt	/*yiddish-custom-keymap-exceptions*
+yiddish-decomp-chars_list	yiddish.txt	/*yiddish-decomp-chars_list*
+yiddish-keymaps	yiddish-keymaps.txt	/*yiddish-keymaps*
+yiddish-keymaps.txt	yiddish-keymaps.txt	/*yiddish-keymaps.txt*
+yiddish-maps-english-order	yiddish-keymaps.txt	/*yiddish-maps-english-order*
+yiddish-maps-hebrew-order	yiddish-keymaps.txt	/*yiddish-maps-hebrew-order*
+yiddish-section-contents	yiddish.txt	/*yiddish-section-contents*
+yiddish-section-intro	yiddish.txt	/*yiddish-section-intro*
+yiddish-section-options	yiddish.txt	/*yiddish-section-options*
+yiddish-section-usage	yiddish.txt	/*yiddish-section-usage*
+yiddish-vowel-signs	yiddish-keymaps.txt	/*yiddish-vowel-signs*
+yiddish.txt	yiddish.txt	/*yiddish.txt*

@@ -1,16 +1,16 @@
-*signify.txt* Indicate changed lines within a file using a VCS.
-*signify*
-                                              ___
-                    __                  __  /'___\
-               ____/\_\     __     ___ /\_\/\ \__/  __  __
-              /',__\/\ \  /'_ `\ /' _ `\/\ \ \ ,__\/\ \/\ \
-             /\__, `\ \ \/\ \L\ \/\ \/\ \ \ \ \ \_/\ \ \_\ \
-             \/\____/\ \_\ \____ \ \_\ \_\ \_\ \_\  \/`____ \
-              \/___/  \/_/\/___L\ \/_/\/_/\/_/\/_/   `/___/> \
-                            /\____/                     /\___/
-                            \_/__/                      \/__/
+*yiddish.txt* Indicate changed lines within a file using a VCS.
+*yiddish*
 
-  by Marco Hinz~
+  VIM-Yiddish
+        __  __  __  __  __________  __  __  _______  ____________  __  __  __
+       / / / / / / / / /______  _/ / / / / /______/ /__  _____  / / / / / / /
+      / / / / / / /_/        / /  /_/ /_/             / /    / / /_/ / / / / 
+     / /_/ / / /            / /  __                  / /    / /     / / / /  
+    / ____/ / /            / /  /_/                 / /    / /     / / / /   
+   / /_____/ /            / /                      / /____/ /     / / / /    
+  /_________/            /_/                      /________/     /_/ /_/     
+
+  by sugarfrosted~
 
   Twitter: https://twitter.com/sugarfrosted200
   Github:  http://github.com/sugarfrosted
@@ -19,11 +19,10 @@
 TOC                                                   *yiddish-section-contents*
 
   INTRO .......................... |yiddish-section-intro|
-  USAGE .......................... |signify-section-usage|
-  OPTIONS ........................ |signify-section-options|
-  COMMANDS ....................... |signify-section-commands|
-  MAPPINGS ....................... |signify-section-mappings|
-  COLORS ......................... |signify-section-colors|
+  USAGE .......................... |yiddish-section-usage|
+  OPTIONS ........................ |yiddish-section-options|
+  COMMANDS ....................... |yiddish-section-commands|
+  MAPPINGS ....................... |yiddish-section-mappings|
 
 ==============================================================================
 INTRO                                                    *yiddish-section-intro*
@@ -31,99 +30,53 @@ INTRO                                                    *yiddish-section-intro*
 A simple plugin to aid the input of Yiddish text. 
 
 ==============================================================================
-USAGE                                                    *signify-section-usage*
+USAGE                                                    *yiddish-section-usage*
 
-The usage is pretty straight-forward. By default you should only notice a
-difference, if you're working in a directory that is managed by a supported
-version control system and the current file was changed since the last commit.
-
-Supported VCS:~
->
-    git
-    mercurial
-    darcs
-    bzr
-    subversion
-    cvs
-    rcs
-    fossil
-    accurev
-    perforce
-<
-Sign explanation:~
-
-    `+`     This line was added.
-
-    `!`     This line was modified.
-
-    `_1`    The number of deleted lines below this sign. If the number is larger
-    `99`    than 9, the `_` will be omitted. For numbers larger than 99, `_>`
-    `_>`    will be shown instead.
-
-    `!1`    This line was modified and a number of lines below were deleted.
-    `!>`    It is a combination of `!` and `_`. If the number is larger than 9,
-            `!>` will be shown instead.
-
-    `‾`     The first line was removed. It's a special case of the `_` sign.
 
 ==============================================================================
-CUSTOM KEYMAPS                                          *yiddish-custom-keymaps*
+CUSTOM KEYMAPS                                          *yiddish-custom-keymap*
 
-vim-yiddish comes with a custom keymap. Although vim does have a selection of
-keymaps for yiddish: one based on the QWERTY phonetic Hebrew keyboard and the
+        |yiddish-custom-keymap-exceptions|
+        |yiddish-complete-keymap|
+        |yiddish-complete-maps-english-order|
+        |yiddish-complete-maps-hebrew-order|
+        |yiddish-vowel-signs|
+
+Vim-Yiddish comes with a custom keymap. Although Vim does have a selection of
+keymap for Yiddish: One is based on the QWERTY phonetic Hebrew keyboard and the
 other on the Hebrew keyboard, these do not reflect the phonetic values of
-yiddish and have some other issues.
+Yiddish.
 
 The Yiddish Keymap included is based on the phonetic values of English with
-some exceptions. The notable exceptions are the following:
+some exceptions. Lower case correspond to the letters in the phonetic
+component. For letters with final forms correspond to the upper case variant
+of the Latins letters. The notable exceptions are the following:
 
 -----------------------------------------------------------------------------
-THE MAPS                                       *yiddish-custom-keymap-mappings*
+THE MAP EXCEPTIONS                        *yiddish-custom-keymap-exceptions*
 ~
 
-a    אַ   Pasekh Alef
-b    ב   Beys
 c    צ   Tsadik
-d    ד   Daled
-e    ע   Ayen
-f    פֿ   Fey
-g    ג   Giml
-h    ה   Hey 
 i    י   Yud
 j    ײ   Tsvey Yudn
-k    ק   Kuf
-l    ל   Lamed
-m    מ   Mem
 n    נ   Nun
-o    אָ   Komets Alef
-p    פּ   Pey
 q    כּ   Kof
 r    ר   Reysh
-s    ס   Samekh
-t    ט   Tes
-u    ו   Vov
-v    װ   Tsvey Vovn
 w    ש   Shin
 x    כ   Khof
 y    ײַ   Pasekh Tsvey Yudn
-z    ז   Zayen
 A    א   Alef
-C    ץ   Langer Tsadik
-F    ף   Langer Fey
 H    ח   Khes
 I    יִ   Khirek Yud
-M    ם   Shlos Mem
-N    ן   Langer Nun
 P    פ   Pey/Fey mit nit keyn nikud
 S    ת   Sof
 T    תּ   Tof
 U    וּ   Khirek Vov
 W    שׂ   Sin
-X    ך   Langer Khof
 Y    ױ   Vov Yud
 
 ==============================================================================
-OPTIONS                                                *signify-section-options*
+OPTIONS                                                *yiddish-section-options*
 
 Put these variables into your vimrc. The provided examples also indicate the
 default values, as long as no "Default:" section is given.
@@ -147,138 +100,4 @@ NOTE: I would suggest leaving as is.
 Used to generate the dictionaries used to compose and decompose characters.
 
 ------------------------------------------------------------------------------
-                                             *signify-option-disable_by_default*
->
-    let g:signify_disable_by_default = 0
-<
-Don't run Sy by default. You can toggle it anytime via :SignifyToggle.
 
-------------------------------------------------------------------------------
-                                              *signify-option-mapping_next_hunk*
-                                              *signify-option-mapping_prev_hunk*
->
-    let g:signify_mapping_next_hunk = '<leader>gj'
-    let g:signify_mapping_prev_hunk = '<leader>gk'
-<
-Mapping for jumping to the start of the next or previous hunk.
-
-Alternatively, you can also map it yourself:
->
-    nmap <leader>gj <plug>(signify-next-hunk)
-    nmap <leader>gk <plug>(signify-prev-hunk)
-<
-There is no difference between both variants.
-
-------------------------------------------------------------------------------
-                                       *signify-option-mapping_toggle_highlight*
->
-    let g:signify_mapping_toggle_highlight = '<leader>gh'
-<
-Mapping for toggling line highlighting for lines containing changes.
-
-------------------------------------------------------------------------------
-                                                 *signify-option-mapping_toggle*
->
-    let g:signify_mapping_toggle = '<leader>gt'
-<
-Mapping for toggling the plugin for the current buffer only.
-
-------------------------------------------------------------------------------
-                                                  *signify-option-skip_filetype*
-                                                  *signify-option-skip_filename*
->
-    let g:signify_skip_filetype = { 'vim': 1, 'c': 1 }
-    let g:signify_skip_filename = { '/home/user/.vimrc': 1 }
-<
-Don't activate the plugin for these filetypes and/or filenames.
-
-NOTE: Filenames have to be absolute paths.
-
-Default: Both are empty.
-
-------------------------------------------------------------------------------
-                                                 *signify-option-sign_overwrite*
->
-    let g:signify_sign_overwrite = 0
-<
-Setting this to 1 means that Sy doesn't have to manage its signs and just
-removes ALL signs before adding its own signs. This typically results
-in a tad more performance, especially when a lot of signs are in use.
-
-If you need plugin compatibility though, you should set this to 0. In this
-case Sy will remember which signs it set last and only removes those at the
-next update.
-
-NOTE: This feature needs at least Vim 7.3.596!
-
-------------------------------------------------------------------------------
-                                             *signify-option-update_on_bufenter*
->
-    let g:signify_update_on_bufenter = 0
-<
-Update signs when entering a buffer that was modified.
-
-NOTE: This also saves the buffer to disk!
-
-------------------------------------------------------------------------------
-                                          *signify-option-update_on_focusgained*
->
-    let g:signify_update_on_focusgained = 0
-<
-Update signs when Vim gains focus.
-
-------------------------------------------------------------------------------
-                                                 *signify-option-line_highlight*
->
-    let g:signify_line_highlight = 0
-<
-Enable line highlighting in addition to using signs by default.
-
-------------------------------------------------------------------------------
-                                         *signify-option-sign_delete_first_line*
-                                         *signify-option-sign_delete*
-                                         *signify-option-sign_change*
-                                         *signify-option-sign_add*
->
-    let g:signify_sign_add               = '+'
-    let g:signify_sign_change            = '!'
-    let g:signify_sign_delete            = '_'
-    let g:signify_sign_delete_first_line = '‾'
-<
-The sign to use if a line was added, deleted or changed or a combination of
-these.
-
-------------------------------------------------------------------------------
-                                              *signify-option-cursorhold_normal*
-                                              *signify-option-cursorhold_insert*
->
-    let g:signify_cursorhold_normal = 0
-    let g:signify_cursorhold_insert = 0
-<
-Additionally trigger sign updates in normal or insert mode after 'updatetime'
-miliseconds without any keypresses. This fires only once between keypresses,
-thus not every 'updatetime' miliseconds.
-
-NOTE: This also saves the buffer to disk!
-
-------------------------------------------------------------------------------
-                                                       *signify-option-difftool*
->
-    let g:signify_difftool = 'gnudiff'
-<
-This will avoid the attempt to find the proper diff tool for version control
-systems that rely on an external diff tool that supports the -U0 flag. These
-are: svn, bzr, darcs, fossil.
-
-Default: "diff"
-
-------------------------------------------------------------------------------
-                                                    *signify-option-diffoptions*
->
-    let g:signify_diffoptions = { 'git': '-w', 'hg': '-w' }
-<
-This will pass the given additional options to the selected VCS diff command.
-
-Default: Does not exist.
-
-vim: tw=78
