@@ -104,17 +104,17 @@ endif
 
 function! Composure()
     if &encoding == 'utf-8'
-        let dictat = g:yidprecomp2noncomp
-        if g:precomposed
-            let g:precomposed=0
-            set spelllang=yi
+        let dictat = g:yidnoncomp2precomp
+        if !g:precomposed
+            let g:precomposed=1
+            set spelllang=yi-pc
             for char in keys(dictat)
                 execute "iabbrev " . char . " " . dictat[char] 
             endfor
             echo "Not Precomposed"
         else
-            let g:precomposed=1
-            set spelllang=yi-pc
+            let g:precomposed=0
+            set spelllang=yi
             for char in keys(dictat)
                 execute "iunabbrev " . dictat[char]
             endfor
@@ -124,6 +124,20 @@ function! Composure()
         echo "Encoding lacks precomposed variants"
     endif
 endfunction
+
+function! Composure_init()
+    if !exists("g:precomposed")
+        let g:precomposed = 1
+    endif
+    let dictat = g:yidnoncomp2precomp
+    if !g:precomposed && &encoding == 'utf-8'
+        for char in keys(dictat)
+            execute "iabbrev " . char . " " . dictat[char] 
+        endfor
+    endif
+endfunction
+
+call Composure_init()
 
 function! YiddishKeyBoard()
     if !exists("w:yidl") "sets default value for w:yidl if not yet set
@@ -140,7 +154,7 @@ function! YiddishKeyBoard()
         unmap zg
         unmap zu
     else
-        set keymap=yiddishprecomp
+        set keymap=yiddish
         noremap zg :call GoodBoth()<return>
         noremap zu :call UndoBoth()<return>
         if g:precomposed

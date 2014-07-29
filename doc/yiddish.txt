@@ -86,7 +86,7 @@ All available options:~
     |yiddish-decomp-chars_list|
 
 ------------------------------------------------------------------------------
-                                                     *yiddish-decomp-chars_list*
+                                                   *yiddish-decomp-chars_list*
 >
     let g:yiddish_decomp_chars = [ 'char1', 'char2',... ]
 <
@@ -100,4 +100,17 @@ NOTE: I would suggest leaving as is.
 Used to generate the dictionaries used to compose and decompose characters.
 
 ------------------------------------------------------------------------------
+                                                         *yiddish-toggle-keys*
+>
+    let g:YiddishKeys = ["t", "T"]
+<
+Used for choosing characters for toggling between yiddish and english while in
+normal mode. Default is the characters "t" and "T", let = [] to disable
+toggling.
+
+
+------------------------------------------------------------------------------
+*yiddish-precomposed-default*
+
+
 
