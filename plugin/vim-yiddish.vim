@@ -13,65 +13,61 @@ endfunction
 if !exists("g:debugwithPY")
     let g:debugwithPY = 1
 endif
-let s:defaultdecompchars = ["אַ", "אָ", "כּ", "פּ", "פֿ", "בֿ", "תּ", "יִ", "וּ", "ײַ", "שׂ"]
+let g:decompchars = ["אַ", "אָ", "כּ", "פּ", "פֿ", "בֿ", "תּ", "יִ", "וּ", "ײַ", "שׂ"]
 "for testing v
 "let g:yiddish_decomp_chars = ["אָ", "כּ", "פּ", "פֿ", "בֿ", "תּ", "יִ", "וּ", "ײַ", "שׂ"]
-call uniq(sort(s:defaultdecompchars))
-lockvar s:defaultdecompchars
-let s:defaultyidnoncomp2precomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ",
-            \"פּ" : "פּ","פֿ" : "פֿ","תּ" : "תּ","כּ" : "כּ","שׂ" : "שׂ","ײַ" : "ײַ",
-            \"בֿ" : "בֿ"}
-let s:defaultyidprecomp2noncomp = {"אַ" : "אַ","אָ" : "אָ","וּ" : "וּ","יִ" : "יִ",
-            \"פּ" : "פּ","פֿ" : "פֿ","תּ" : "תּ","כּ" : "כּ","שׂ" : "שׂ","ײַ" : "ײַ",
-            \"בֿ" : "בֿ"}
-lockvar s:defaultyidnoncomp2precomp
-lockvar s:defaultyidprecomp2noncomp
-if !exists("g:yiddish_decomp_chars")
-    let g:yiddish_decomp_chars = copy(s:defaultdecompchars)
-    let g:yidnoncomp2precomp = copy(s:defaultyidnoncomp2precomp)
-    let g:yidprecomp2noncomp = copy(s:defaultyidprecomp2noncomp)
-endif
-call uniq(sort(g:yiddish_decomp_chars))
-if g:yiddish_decomp_chars == s:defaultdecompchars
-    let g:yidnoncomp2precomp = copy(s:defaultyidnoncomp2precomp)
-    let g:yidprecomp2noncomp = copy(s:defaultyidprecomp2noncomp)
-elseif executable("uconv")
-    let g:yidnoncomp2precomp = {}
-    let g:yidprecomp2noncomp = {}
-    for s:char in g:yiddish_decomp_chars
-        let s:dechar = system("uconv -x any-nfd <<<" . s:char)
-        let s:dechar = substitute(s:dechar,"\n","","g") 
-        let g:yidprecomp2noncomp[s:char] = s:dechar
-        let g:yidnoncomp2precomp[s:dechar] = s:char
-    endfor
-elseif has("python") 
-python << endpython
-import vim
-from unicodedata import normalize
-vim.vars["yidnoncomp2precomp"] = {}
-vim.vars["yidprecomp2noncomp"] = {}
-for char in vim.vars["yiddish_decomp_chars"]:
-    charhold = char.decode('utf-8')
-    vim.vars["yidnoncomp2precomp"][normalize('NFD',charhold)] = charhold
-    vim.vars["yidprecomp2noncomp"][charhold] = normalize('NFD',charhold)
-endpython
-elseif executable(g:python27location)
-    if !exists("g:python27location")
-        let g:python27location = "python2.7"
-    endif
-    let s:path = fnamemodify(resolve(expand('<sfile>:p')), ':h')
-    let g:yidnoncomp2precomp = {}
-    let g:yidprecomp2noncomp = {}
-    for s:char in g:yiddish_decomp_chars
-        let s:dechar = system(g:python27location . " " . s:path . "/decomp.py " . s:char)
-        let g:yidprecomp2noncomp[s:char] = s:dechar
-        let g:yidnoncomp2precomp[s:dechar] = s:char
-    endfor
-else
-    echo "python2.7 or uconv is required for custom mapping, if it has a different name you need to specify it in your .vimrc function with `let g:python27location = `. Using earlier versions of python might work but it isn't supported. Python 3 will not."
-    let g:yidnoncomp2precomp = copy(s:defaultyidnoncomp2precomp)
-    let g:yidprecomp2noncomp = copy(s:defaultyidprecomp2noncomp)
-endif
+"call uniq(sort(s:defaultdecompchars))
+lockvar g:decompchars
+let g:yidnoncomp2precomp = {'<char-1488><char-1463>': '<char-64302>', '<char-1508><char-1471>': '<char-64334>', '<char-1488><char-1464>': '<char-64303>', '<char-1497><char-1460>': '<char-64285>', '<char-1514><char-1468>': '<char-64330>', '<char-1499><char-1468>': '<char-64315>', '<char-1493><char-1468>': '<char-64309>', '<char-1513><char-1474>': '<char-64299>', '<char-1489><char-1471>': '<char-64332>', '<char-1508><char-1468>': '<char-64324>', '<char-1522><char-1463>': '<char-64287>'}
+let g:yidprecomp2noncomp = {'<char-64302>': '<char-1488><char-1463>', '<char-64287>': '<char-1522><char-1463>', '<char-64285>': '<char-1497><char-1460>', '<char-64324>': '<char-1508><char-1468>', '<char-64315>': '<char-1499><char-1468>', '<char-64303>': '<char-1488><char-1464>', '<char-64299>': '<char-1513><char-1474>', '<char-64330>': '<char-1514><char-1468>', '<char-64332>': '<char-1489><char-1471>', '<char-64309>': '<char-1493><char-1468>', '<char-64334>': '<char-1508><char-1471>'}
+lockvar g:yidnoncomp2precomp
+lockvar g:yidprecomp2noncomp
+"if !exists("g:yiddish_decomp_chars")
+"    let g:yiddish_decomp_chars = copy(s:defaultdecompchars)
+"    let g:yidnoncomp2precomp = copy(s:defaultyidnoncomp2precomp)
+"    let g:yidprecomp2noncomp = copy(s:defaultyidprecomp2noncomp)
+"endif
+"call uniq(sort(g:yiddish_decomp_chars))
+"if g:yiddish_decomp_chars == s:defaultdecompchars
+"    let g:yidnoncomp2precomp = copy(s:defaultyidnoncomp2precomp)
+"    let g:yidprecomp2noncomp = copy(s:defaultyidprecomp2noncomp)
+"elseif executable("uconv")
+"    let g:yidnoncomp2precomp = {}
+"    let g:yidprecomp2noncomp = {}
+"    for s:char in g:yiddish_decomp_chars
+"        let s:dechar = system("uconv -x any-nfd <<<" . s:char)
+"        let s:dechar = substitute(s:dechar,"\n","","g") 
+"        let g:yidprecomp2noncomp[s:char] = s:dechar
+"        let g:yidnoncomp2precomp[s:dechar] = s:char
+"    endfor
+"elseif has("python") 
+"python << endpython
+"import vim
+"from unicodedata import normalize
+"vim.vars["yidnoncomp2precomp"] = {}
+"vim.vars["yidprecomp2noncomp"] = {}
+"for char in vim.vars["yiddish_decomp_chars"]:
+"    charhold = char.decode('utf-8')
+"    vim.vars["yidnoncomp2precomp"][normalize('NFD',charhold)] = charhold
+"    vim.vars["yidprecomp2noncomp"][charhold] = normalize('NFD',charhold)
+"endpython
+"elseif executable(g:python27location)
+"    if !exists("g:python27location")
+"        let g:python27location = "python2.7"
+"    endif
+"    let s:path = fnamemodify(resolve(expand('<sfile>:p')), ':h')
+"    let g:yidnoncomp2precomp = {}
+"    let g:yidprecomp2noncomp = {}
+"    for s:char in g:yiddish_decomp_chars
+"        let s:dechar = system(g:python27location . " " . s:path . "/decomp.py " . s:char)
+"        let g:yidprecomp2noncomp[s:char] = s:dechar
+"        let g:yidnoncomp2precomp[s:dechar] = s:char
+"    endfor
+"else
+"    echo "python2.7 or uconv is required for custom mapping, if it has a different name you need to specify it in your .vimrc function with `let g:python27location = `. Using earlier versions of python might work but it isn't supported. Python 3 will not."
+"    let g:yidnoncomp2precomp = copy(s:defaultyidnoncomp2precomp)
+"    let g:yidprecomp2noncomp = copy(s:defaultyidprecomp2noncomp)
+"endif
  
 function! YiddishShortCuts()
     if !exists("g:YiddishKeys")
@@ -94,29 +90,34 @@ function! YiddishShortCuts()
 endfunction
 
 command YiddishSC :call YiddishShortCuts()
-if &encoding == 'utf-8'
-    if !exists("g:precomposed")
-        let g:precomposed=1
-    endif
-else
-    let g:precomposed=0
-endif
+"if &encoding == 'utf-8'
+"    if !exists("g:precomposed")
+"        let g:precomposed=1
+"    endif
+"else
+"    let g:precomposed=0
+"endif
+let g:precomposed = 0
 
 function! Composure()
     if &encoding == 'utf-8'
         let dictat = g:yidnoncomp2precomp
-        if !g:precomposed
+        if g:precomposed
+            let g:precomposed=0
+            set spelllang=yi
+            for char in keys(dictat)
+                try
+                    execute "iunabbrev " . dictat[char]
+                catch /^E24:/
+                    echo char
+                endtry
+            endfor
+            echo "Not Precomposed"
+        else
             let g:precomposed=1
             set spelllang=yi-pc
             for char in keys(dictat)
                 execute "iabbrev " . char . " " . dictat[char] 
-            endfor
-            echo "Not Precomposed"
-        else
-            let g:precomposed=0
-            set spelllang=yi
-            for char in keys(dictat)
-                execute "iunabbrev " . dictat[char]
             endfor
             echo "Precomposed"
         endif
@@ -125,12 +126,20 @@ function! Composure()
     endif
 endfunction
 
-function! Composure_init()
-    if !exists("g:precomposed")
-        let g:precomposed = 1
+function! Composure_init(...)
+    if exists("g:precomposed")
+        if a:0 != 0
+            let g:precomposed = a:1
+        endif
+    else
+        if a:0 != 0
+            let g:precomposed = a:1
+        else
+            let g:precomposed = 1
+        endif
     endif
     let dictat = g:yidnoncomp2precomp
-    if !g:precomposed && &encoding == 'utf-8'
+    if g:precomposed && &encoding == 'utf-8'
         for char in keys(dictat)
             execute "iabbrev " . char . " " . dictat[char] 
         endfor
