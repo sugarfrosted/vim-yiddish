@@ -18,8 +18,8 @@ let g:decompchars = ["אַ", "אָ", "כּ", "פּ", "פֿ", "בֿ", "תּ", "יִ", "�
 "let g:yiddish_decomp_chars = ["אָ", "כּ", "פּ", "פֿ", "בֿ", "תּ", "יִ", "וּ", "ײַ", "שׂ"]
 "call uniq(sort(s:defaultdecompchars))
 lockvar g:decompchars
-let g:yidnoncomp2precomp = {'<char-1488><char-1463>': '<char-64302>', '<char-1508><char-1471>': '<char-64334>', '<char-1488><char-1464>': '<char-64303>', '<char-1497><char-1460>': '<char-64285>', '<char-1514><char-1468>': '<char-64330>', '<char-1499><char-1468>': '<char-64315>', '<char-1493><char-1468>': '<char-64309>', '<char-1513><char-1474>': '<char-64299>', '<char-1489><char-1471>': '<char-64332>', '<char-1508><char-1468>': '<char-64324>', '<char-1522><char-1463>': '<char-64287>'}
-let g:yidprecomp2noncomp = {'<char-64302>': '<char-1488><char-1463>', '<char-64287>': '<char-1522><char-1463>', '<char-64285>': '<char-1497><char-1460>', '<char-64324>': '<char-1508><char-1468>', '<char-64315>': '<char-1499><char-1468>', '<char-64303>': '<char-1488><char-1464>', '<char-64299>': '<char-1513><char-1474>', '<char-64330>': '<char-1514><char-1468>', '<char-64332>': '<char-1489><char-1471>', '<char-64309>': '<char-1493><char-1468>', '<char-64334>': '<char-1508><char-1471>'}
+let g:yidnoncomp2precomp={'<char-0x5db><char-0x5bc>': '<char-0xfb3b>', '<char-0x5d0><char-0x5b7>': '<char-0xfb2e>', '<char-0x5d5><char-0x5bc>': '<char-0xfb35>', '<char-0x5f2><char-0x5b7>': '<char-0xfb1f>', '<char-0x5ea><char-0x5bc>': '<char-0xfb4a>', '<char-0x5d1><char-0x5bf>': '<char-0xfb4c>', '<char-0x5e4><char-0x5bc>': '<char-0xfb44>', '<char-0x5e4><char-0x5bf>': '<char-0xfb4e>', '<char-0x5e9><char-0x5c2>': '<char-0xfb2b>', '<char-0x5d9><char-0x5b4>': '<char-0xfb1d>', '<char-0x5d0><char-0x5b8>': '<char-0xfb2f>'}
+let g:yidprecomp2noncomp={'<char-0xfb35>': '<char-0x5d5><char-0x5bc>', '<char-0xfb44>': '<char-0x5e4><char-0x5bc>', '<char-0xfb3b>': '<char-0x5db><char-0x5bc>', '<char-0xfb4c>': '<char-0x5d1><char-0x5bf>', '<char-0xfb1f>': '<char-0x5f2><char-0x5b7>', '<char-0xfb4e>': '<char-0x5e4><char-0x5bf>', '<char-0xfb1d>': '<char-0x5d9><char-0x5b4>', '<char-0xfb2e>': '<char-0x5d0><char-0x5b7>', '<char-0xfb4a>': '<char-0x5ea><char-0x5bc>', '<char-0xfb2f>': '<char-0x5d0><char-0x5b8>', '<char-0xfb2b>': '<char-0x5e9><char-0x5c2>'}
 lockvar g:yidnoncomp2precomp
 lockvar g:yidprecomp2noncomp
 "if !exists("g:yiddish_decomp_chars")
@@ -106,18 +106,15 @@ function! Composure()
             let g:precomposed=0
             set spelllang=yi
             for char in keys(dictat)
-                try
-                    execute "iunabbrev " . dictat[char]
-                catch /^E24:/
-                    echo char
-                endtry
+                    execute "iunmap " . dictat[char]
             endfor
             echo "Not Precomposed"
         else
             let g:precomposed=1
             set spelllang=yi-pc
             for char in keys(dictat)
-                execute "iabbrev " . char . " " . dictat[char] 
+                execute "inoremap " . char . " " . dictat[char] 
+                echo char dictat[char]
             endfor
             echo "Precomposed"
         endif
@@ -141,7 +138,7 @@ function! Composure_init(...)
     let dictat = g:yidnoncomp2precomp
     if g:precomposed && &encoding == 'utf-8'
         for char in keys(dictat)
-            execute "iabbrev " . char . " " . dictat[char] 
+            execute "inoremap " . char . " " . dictat[char] 
         endfor
     endif
 endfunction
@@ -153,9 +150,9 @@ function! YiddishKeyBoard()
         let w:yidl=0 "assumed initial value
     endif
     if w:yidl "turns off Yiddish mode and switches back to English
-        set spelllang=en_us
+        setlocal spelllang=en_us
         set norightleft
-        set keymap=""
+        setlocal keymap=""
         set norevins
         let w:yidl = 0
         echo "English"
@@ -163,7 +160,7 @@ function! YiddishKeyBoard()
         unmap zg
         unmap zu
     else
-        set keymap=yiddish
+        setlocal keymap=yiddish
         noremap zg :call GoodBoth()<return>
         noremap zu :call UndoBoth()<return>
         if g:precomposed
@@ -179,7 +176,7 @@ function! YiddishKeyBoard()
             inoremap <left> <right>
             inoremap <right> <left>
         else
-            set rightleft
+            setlocal rightleft
         endif
         let w:yidl=1
         noremap \| :Precomp<Enter>

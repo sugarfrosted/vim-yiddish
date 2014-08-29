@@ -83,12 +83,13 @@ default values, as long as no "Default:" section is given.
 
 All available options:~
 
-    |yiddish-decomp-chars_list|
+    |yiddish-precompose-characters|
+    |yiddish-toggle-keymap|
 
 ------------------------------------------------------------------------------
-                                                   *yiddish-decomp-chars_list*
+                                                   *yiddish-precomposed*
 >
-    let g:yiddish_decomp_chars = [ 'char1', 'char2',... ]
+    let g:yiddish_precomp = 1
 <
 
 Accepts a list of the composed variants of characters.
