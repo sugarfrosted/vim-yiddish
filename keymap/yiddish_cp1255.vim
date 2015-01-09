@@ -64,5 +64,4 @@ V   <char-225><char-207>    " בֿ  veyz
 W   <char-249><char-210>    " שׂ  sin
 X   <char-234>              " ך  langer khof
 Y   <char-213>              " ױ  vov yud
--   <char-206>              " ־  makef
-_   -                       " -  hyphen
+`   <char-206>              " ־  makef

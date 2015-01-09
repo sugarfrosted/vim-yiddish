@@ -53,4 +53,3 @@ V   <char-225>              "   veyz
 W   <char-249>              "   sin
 X   <char-234>              "   khof
 Y   <char-229><char-233>    "   vov yud
-_   -                       "   hyphen

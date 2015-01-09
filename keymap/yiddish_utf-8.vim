@@ -60,13 +60,5 @@ V   <char-0x5d1><char-0x5bf>    " בֿ  veyz
 W   <char-0x5e9><char-0x5c2>    " שׂ  sin
 X   <char-0x5da>                " ך  langer khof
 Y   <char-0x5f1>                " ױ  vov yud
-|   <char-0x5be>                " ־  makef
-`   <char-0x5f4>                " gershayim
-
-
-xxx - x = xx
-xxxx - xx = xx
-xxxxxxx - xx = xxxxx
-xxx - x = x
-
-xxx + x = xx + xx
+`   <char-0x5be>                " ־  makef
+~   <char-0x5f4>                " gershayim
