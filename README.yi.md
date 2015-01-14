@@ -1,4 +1,4 @@
-&#8207;מײן קלײנער ייִדישער פּרעפֿערענצן און שליסלצעשטעלן פֿור װים.
+מײן קלײנער ייִדישער פּרעפֿערענצן און שליסלצעשטעלן פֿור װים&#8207;.&#8207;
 
 Dependencies: For normal usage require `+arabic` or at least `+rightleft` , which is included in Vim compiled with `--with-features=huge` and `--with-features=big`. In order to use custom composition lists the possible dependencies are: Compiled with Python Support (2.7), the program `uconv`, or any installation of `python2.7`(by default uses the program named `python2.7` to select another name or to use a complete path modify `let g:python27location="<location>"`, 2.6 should also work, but is untested.) 
 
