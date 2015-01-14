@@ -16,7 +16,7 @@ and without python support.
 Phonetic keymaps mostly based on: http://www.shoshke.net/uyip/qwerty_os_10.htm
 
 | שיסל                              | Function                                              |
-|:---------------------------------:| ----------------------------------------------------- |
+|:---------------------------------:| -----------------------------------------------------:|
 | `t`/`T`                           | בײַטן צװישן ייִדיש און ענגליש                           |
 | <code>&#124;</code>               | בײַטן צװישן אױסגעזעצטע און ניט אותיות                  |
 | <code>&#60;Leader&#62;tran</code> | translates selection to current glyph types           |
@@ -25,7 +25,7 @@ Phonetic keymaps mostly based on: http://www.shoshke.net/uyip/qwerty_os_10.htm
 
 
 | Command                           | Function                                              |
-| --------------------------------- | ----------------------------------------------------- |
+| --------------------------------- | -----------------------------------------------------:|
 | `:Yidkey`                         | toggles between Yiddish and English modes             |
 | `:Precomp`                        | toggles between non-composed and composed glyphs      |
 | `:CompTransAll`                   | translates selection to current glyph types           |
