@@ -21,7 +21,7 @@ Phonetic keymaps mostly based on: http://www.shoshke.net/uyip/qwerty_os_10.htm
 | <code>&#124;</code>               | בײַטן צװישן אױסגעזעצטע און ניט אותיות                  |
 | <code>&#60;Leader&#62;tran</code> | translates selection to current glyph types           |
 | <code>&#60;Leader&#62;tral</code> | translates buffer to current glyph types              |
-| <code>&#60;F8&#62;</code>         | בײַטן צװישן ייִדיש און ענגליש בעת אין ``i&#8207;ns&#8207;e&#8207;rt&#8207; mo&#8207;d&#8207;e&#8207;''   |
+| <code>&#60;F8&#62;</code>         | בײַטן צװישן ייִדיש און ענגליש בעת אין ``insert mode'' אַ |
 
 
 | Command                           | Function                                              |
