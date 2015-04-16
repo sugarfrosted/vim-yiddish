@@ -71,14 +71,14 @@ lockvar g:yidprecomp2noncomp
  
 function! YiddishShortCuts()
     if !exists("g:YiddishKeys")
-        let g:YiddishKeys = ["t","T"]
+        let g:YiddishKeys = ["<Leader>Y", "<Leader>y"]
     endif
     if type(g:YiddishKeys) == type("")
         let mapping = g:YiddishKeys
         execute "nnoremap " . mapping . " :Yidkey<Enter>"
     else
         if type(g:YiddishKeys) != type([])
-            let g:YiddishKeys = ["t","T"]
+            let g:YiddishKeys = ["<Leader>Y", "<Leader>y"]
         endif
         for mapping in g:YiddishKeys
             execute "nnoremap " . mapping . " :Yidkey<Enter>"
@@ -114,7 +114,7 @@ function! Composure()
             set spelllang=yi-pc
             for char in keys(dictat)
                 execute "inoremap " . char . " " . dictat[char] 
-                echo char dictat[char]
+"                echo char dictat[char]
             endfor
             echo "Precomposed"
         endif
